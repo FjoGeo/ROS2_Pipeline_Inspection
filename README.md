@@ -1,3 +1,5 @@
 # ROS_Tutotrial
 
-## Test
+## notes 
+Before Starting - Create own branch
+When finished - merge

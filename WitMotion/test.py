@@ -3,7 +3,9 @@ import time
 
 
 def updateData(DeviceModel):
-    print(f"{DeviceModel.deviceName} \n {DeviceModel.deviceData}")
+    # print(f"{DeviceModel.deviceName} \n {DeviceModel.deviceData}")
+
+    return DeviceModel.deviceData
 
 
 if __name__ == "__main__":

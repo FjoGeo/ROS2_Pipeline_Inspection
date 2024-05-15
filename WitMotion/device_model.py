@@ -112,7 +112,7 @@ class DeviceModel:
             tempH = (tempL ^ self.auchCRCHi[tempIndex]) & 0xff
             tempL = self.auchCRCLo[tempIndex]
         return (tempH << 8) | tempL
-        pass
+
 
     # region 获取设备数据 Obtain device data
 
