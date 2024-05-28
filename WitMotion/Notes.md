@@ -27,7 +27,7 @@ check rights:
 - Download from github.com/pyserial/pyserial/releases
 - Install (Conda does not work / needs workaround)
 
-# Install a ROS2 node
+# Install a ROS2 package (sub / pub)
 ---
 
 (Tutorial:)[https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html]
