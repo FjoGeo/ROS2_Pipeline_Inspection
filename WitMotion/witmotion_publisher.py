@@ -3,6 +3,7 @@ from rclpy.node import Node
 from std_msgs.msg import String
 import threading
 import time
+import serial
 from serial import SerialException
 
 class SerialPublisher(Node):
