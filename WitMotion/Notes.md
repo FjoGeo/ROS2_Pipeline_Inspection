@@ -22,13 +22,17 @@ check rights:
 # Install PySerial
 ---
 
+
+
 - Download from github.com/pyserial/pyserial/releases
 - Install (Conda does not work / needs workaround)
 
 # Install a ROS2 node
 ---
 
-- go /src
+(Tutorial:)[https://docs.ros.org/en/humble/Tutorials/Beginner-Client-Libraries/Writing-A-Simple-Py-Publisher-And-Subscriber.html]
+
+- go to /src
 
 
       ros2 pkg create --build-type ament_python <name_of_package>
@@ -36,4 +40,11 @@ check rights:
 - create subscriber and publisher
 - update setup.py
 - update package.xml
-- update config.cfg 
+- update config.cfg
+- go back to workspace directory
+
+      colcon build --packages-select <name_of_pkg>
+
+- source
+
+          source ~/ros2_humble/install/local_setup.bas
