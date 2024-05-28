@@ -47,4 +47,4 @@ check rights:
 
 - source
 
-          source ~/ros2_humble/install/local_setup.bas
+          source ~/<your_ros_directory>/install/local_setup.bas
