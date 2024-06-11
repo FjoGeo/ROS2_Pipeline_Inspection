@@ -7,6 +7,8 @@
 
     [Python](https://github.com/Hyun-je/pyrplidar)
 
+    [Documentation](http://bucket.download.slamtec.com/ccb3c2fc1e66bb00bd4370e208b670217c8b55fa/LR001_SLAMTEC_rplidar_protocol_v2.1_en.pdf)
+
 useful commands
   
       python3 -m venv .venv
