@@ -12,3 +12,8 @@ useful commands
       python3 -m venv .venv
       source .venv/bin/activate
       sudo chmod 777 /dev/ttyUSB0
+
+
+- Port: "COM7" on Windows and "/dev/ttyUSB0" on Linux
+- Baudrate: 1000000
+- Mode: 0 or 1
