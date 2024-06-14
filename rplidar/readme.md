@@ -19,3 +19,8 @@ useful commands
 - Port: "COM7" on Windows and "/dev/ttyUSB0" on Linux
 - Baudrate: 1000000
 - Mode: 0 or 1
+
+
+Start rplidar in ROS2
+
+    ros2 launch rplidar_ros view_rplidar_s2_launch.py
