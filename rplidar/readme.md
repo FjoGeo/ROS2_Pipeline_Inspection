@@ -24,3 +24,11 @@ useful commands
 Start rplidar in ROS2
 
     ros2 launch rplidar_ros view_rplidar_s2_launch.py
+
+
+## Install own package
+
+        cd ~/ros2_ws/src
+        ros2 pkg create --build-type ament_python <name_of_package>
+        colcon build --packages-select <name_of_pkg>
+        ros2 run <name_of_package> talker
