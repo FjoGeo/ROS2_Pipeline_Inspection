@@ -38,11 +38,11 @@ pip install opencv-python
 
 cd ~/ros2_ws
 source install/setup.bash
-ros2 run my_relasense talker
+ros2 run my_realsense talker
 
-ros2 run my_relasense listener_rgb
-ros2 run my_relasense listener_depth
-ros2 run my_relasense listener_pointcloud
+ros2 run my_realsense listener_rgb
+ros2 run my_realsense listener_depth
+ros2 run my_realsense listener_pointcloud
 
 ```
 
