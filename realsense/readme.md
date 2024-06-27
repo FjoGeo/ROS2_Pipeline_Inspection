@@ -31,7 +31,7 @@ pip install opencv-python
 [Pointcloud](https://github.com/IntelRealSense/librealsense/blob/development/wrappers/python/examples/opencv_pointcloud_viewer.py)
 
 
-## USe
+## Use
 
 
 ```bash
