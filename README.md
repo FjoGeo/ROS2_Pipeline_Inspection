@@ -360,7 +360,7 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['ros2', 'bag', 'record', '-o', 'my_bag', '/lidar_scan /serial_data'],
+            cmd=['ros2', 'bag', 'record', '-o', 'my_bag', '/lidar_scan', '/serial_data', 'realsense/depth', 'realsense/pointcloud', 'realsense/rgb'],
             output='screen'
         )
  
