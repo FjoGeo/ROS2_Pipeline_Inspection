@@ -21,7 +21,7 @@ def deserialize_data(data, msg_type):
     return deserialize_message(data, msg_type)
 
 # Apply the deserialization to the "data" column
-df['deserialized_data'] = df['data'].apply(lambda x: deserialize_data(x, PointCloud2))
+df['deserialized_data'] = df['data'].apply(lambda x: deserialize_data(x, Float32))
 
 # Extract the actual data from the deserialized messages
 df['deserialized_data'] = df['deserialized_data'].apply(lambda msg: msg.data)
