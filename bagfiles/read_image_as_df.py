@@ -6,58 +6,69 @@ import rclpy
 import cv2
 from cv_bridge import CvBridge
 
-# Function to deserialize Image message
-def deserialize_image(data):
-    # Use rclpy's deserialize_message to convert binary data to Image
-    msg = deserialize_message(data, Image)
-    return msg
 
-# Path to your .db3 bag file
-db_path = "my_bag_1/my_bag_0.db3"
+class ImageToDataFrame:
+    def __init__(self, dbPath, topicID):
+        self.dbPath = dbPath
+        self.conn = sqlite3.connect(dbPath)
+        self.cursor = self.conn.cursor()
+        self.rclpy = rclpy
+        self.rclpy.init()
+        self.dataframe = None
+        self.topicID = topicID
+        self.imageToCVImage()
+        
 
-# Connect to the database
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
 
-# Query to get messages with topic_id=16 (adjust query as needed)
-cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=16 LIMIT 5")
-rows = cursor.fetchall()  # Fetch multiple rows
+    @staticmethod
+    def deserializeImage(data):
+        msg = deserialize_message(data, Image)
+        return msg
 
-# Close the connection
-conn.close()
 
-rclpy.init()
+    def getDataFromDB(self):
+        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID} LIMIT 2")
+        rows = self.cursor.fetchall()
+        self.conn.close()
 
-# Initialize the DataFrame
-df = pd.DataFrame(columns=['timestamp', 'image'])
-
-if rows:
-    bridge = CvBridge()
-    data_list = []  # Temporary list to store data before concatenating
+        return rows
     
-    for row in rows:
-        timestamp, data = row
 
-        # Deserialize image message
-        image = deserialize_image(data)
+    def deserializeDataFrame(self):
+        rows = self.getDataFromDB()
+        images = []
+        timestamps = []
+        for row in rows:
+            timestamp, data = row
+            image = self.deserializeImage(data)
+            images.append(image)
+            timestamps.append(timestamp)
 
-        # Convert the ROS Image message to an OpenCV image
-        cv_image = bridge.imgmsg_to_cv2(image, desired_encoding='passthrough')
+        return images, timestamps
 
-        # Add the image and timestamp to the temporary list
-        data_list.append({'timestamp': timestamp, 'image': cv_image})
+
+    def imageToCVImage(self):
+        dataList = []
+        bridge = CvBridge()
+        images, timestamps = self.deserializeDataFrame()
+        for image, timestamp in zip(images, timestamps):
+            cv_image = bridge.imgmsg_to_cv2(image, desired_encoding="passthrough")
+            dataList.append({'timestamp':timestamp, 'data':cv_image})
+        self.dataframe = pd.concat([self.dataframe, pd.DataFrame(dataList)], ignore_index=True)
+        self.rclpy.shutdown()
+
+
+    def displayDataFrame(self):
+        print(self.dataframe.head())
+        print(self.dataframe.tail())
+        # print(self.dataframe.info())
+        # print(self.dataframe.describe())
+        # print(self.dataframe.columns)
+        # print(self.dataframe.shape)
+        
     
-    # Concatenate the temporary list to the DataFrame
-    df = pd.concat([df, pd.DataFrame(data_list)], ignore_index=True)
-
-# Shutdown ROS
-rclpy.shutdown()
-
-# Display the first image as an example
-# if not df.empty:
-#     cv2.imshow('Image', df.loc[0, 'image'])
-#     cv2.waitKey(0)
-#     cv2.destroyAllWindows()
-
-# Example of accessing the DataFrame
-print(df.head())
+if __name__ == "__main__":
+    dbPath = "my_bag_1/my_bag_0.db3"
+    topicID = 16
+    imageDF = ImageToDataFrame(dbPath, topicID)
+    imageDF.displayDataFrame()
