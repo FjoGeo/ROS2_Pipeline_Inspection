@@ -3,7 +3,6 @@ import pandas as pd
 from sensor_msgs.msg import Image
 from rclpy.serialization import deserialize_message
 import rclpy
-import cv2
 from cv_bridge import CvBridge
 
 
