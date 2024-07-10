@@ -3,6 +3,7 @@ import pandas as pd
 from sensor_msgs.msg import Image
 from rclpy.serialization import deserialize_message
 import rclpy
+import cv2
 from cv_bridge import CvBridge
 
 
@@ -18,7 +19,6 @@ class ImageToDataFrame:
         self.imageToCVImage()
         
 
-
     @staticmethod
     def deserializeImage(data):
         msg = deserialize_message(data, Image)
@@ -33,7 +33,7 @@ class ImageToDataFrame:
         return rows
     
 
-    def deserializeDataFrame(self):
+    def getImageAndTimestamp(self):
         rows = self.getDataFromDB()
         images = []
         timestamps = []
@@ -49,7 +49,7 @@ class ImageToDataFrame:
     def imageToCVImage(self):
         dataList = []
         bridge = CvBridge()
-        images, timestamps = self.deserializeDataFrame()
+        images, timestamps = self.getImageAndTimestamp()
         for image, timestamp in zip(images, timestamps):
             cv_image = bridge.imgmsg_to_cv2(image, desired_encoding="passthrough")
             dataList.append({'timestamp':timestamp, 'data':cv_image})
