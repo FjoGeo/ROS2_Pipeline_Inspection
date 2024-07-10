@@ -15,7 +15,7 @@ db_path = "my_bag_1/my_bag_0.db3"
 conn = sqlite3.connect(db_path)
 cursor = conn.cursor()
 
-cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=17")
+cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=17 LIMIT 1")
 rows = cursor.fetchall()
 
 conn.close()
@@ -23,15 +23,14 @@ conn.close()
 
 rclpy.init()
 
-# Extract the binary data and timestamps
 timestamps = [row[0] for row in rows]
 data = [row[1] for row in rows]
 
-# Deserialize all messages
+
 point_clouds = [deserialize_pointcloud2(d) for d in data]
 
 
-def pointcloud2_to_dataframe(point_cloud):
+def pointcloud2_to_dataframe(point_cloud, timestamp):
     points = []
     for point in np.ndindex((point_cloud.height, point_cloud.width)):
         
@@ -45,19 +44,25 @@ def pointcloud2_to_dataframe(point_cloud):
         r = np.frombuffer(point_data[12:13], dtype=np.uint8)[0]
         g = np.frombuffer(point_data[13:14], dtype=np.uint8)[0]
         b = np.frombuffer(point_data[14:15], dtype=np.uint8)[0]
-        points.append((x, y, z, r, g, b))
+        # points.append((x, y, z, r, g, b))
+        points.append((timestamp, x, y, z, r, g, b))
     
     # Create DataFrame
-    df = pd.DataFrame(points, columns=['x', 'y', 'z', 'r', 'g', 'b'])
+    df = pd.DataFrame(points, columns=['time','x', 'y', 'z', 'r', 'g', 'b'])
     
     return df
 
-dataframes = [pointcloud2_to_dataframe(pc) for pc in point_clouds]
+# Convert each point cloud to a DataFrame
+#dataframes = [pointcloud2_to_dataframe(pc) for pc in point_clouds]
+dataframes = [pointcloud2_to_dataframe(pc, t) for pc,t in zip(point_clouds, timestamps)]
+
+# concat the dataframes
 df = pd.concat(dataframes)
 
-# print(df.head())
-# print(df.tail())
-# print(len(df))
-df.to_csv('pointcloud.csv', index=False)
+print(df.head())
+print(df.tail())
+print(len(df))
+
+
 
 rclpy.shutdown()
