@@ -5,46 +5,54 @@ import rclpy
 import cv2
 from cv_bridge import CvBridge
 
-# Function to deserialize Image message
-def deserialize_image(data):
-    # Use rclpy's deserialize_message to convert binary data to Image
-    msg = deserialize_message(data, Image)
-    return msg
 
-# Path to your .db3 bag file
-db_path = "my_bag_1/my_bag_0.db3"
+class ImageReader:
+    def __init__(self, dbPath, topicID):
+        self.dbPath = dbPath
+        self.conn = sqlite3.connect(dbPath)
+        self.cursor = self.conn.cursor()
+        self.rclpy = rclpy
+        self.rclpy.init()
+        self.dataframe = None
+        self.topicID = topicID
+        self.images = []
+        self.deserializeDataFrame()
 
-# Connect to the database
-conn = sqlite3.connect(db_path)
-cursor = conn.cursor()
 
-# Query to get messages with topic_id=16 (adjust query as needed)
-cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=16 LIMIT 5")
-rows = cursor.fetchall()  # Fetch multiple rows
+    @staticmethod
+    def deserializeImage(data):
+        msg = deserialize_message(data, Image)
+        return msg
 
-# Close the connection
-conn.close()
 
-rclpy.init()
+    def getDataFromDB(self):
+        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID} LIMIT 2")
+        rows = self.cursor.fetchall()
+        self.conn.close()
 
-if rows:
-    bridge = CvBridge()
+        return rows
     
-    for row in rows:
-        timestamp, data = row
 
-        # Deserialize image message
-        image = deserialize_image(data)
+    def deserializeDataFrame(self):
+        rows = self.getDataFromDB()
+        for row in rows:
+            _, data = row
+            image = self.deserializeImage(data)
+            self.images.append(image)
+    
 
-        # Convert the ROS Image message to an OpenCV image
-        cv_image = bridge.imgmsg_to_cv2(image, desired_encoding='passthrough')
+    def displayImages(self):
+        bridge = CvBridge()
+        for image in self.images:
+            cv_image = bridge.imgmsg_to_cv2(image, desired_encoding="passthrough")
+            cv2.imshow("Image", cv_image)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+        self.rclpy.shutdown()
 
-        # Display the image
-        cv2.imshow('Image', cv_image)
-        cv2.waitKey(0)  # Wait indefinitely until a key is pressed
-        cv2.destroyAllWindows()
 
-else:
-    print("No data found in the database for topic_id=16")
-
-rclpy.shutdown()
+if __name__ == "__main__":
+    dbPath = "my_bag_1/my_bag_0.db3"
+    topicID = 16
+    imageReader = ImageReader(dbPath, topicID)
+    imageReader.displayImages()
