@@ -10,4 +10,6 @@ Collection of Python scripts and ROS2 drivers for the used sensors.
 
 ## Working with the data
 
-- 
+- Short [explanation](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/bag%20file%20info.md)
+- The data can be recorded with this [file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/launch/test_launch.py)
+- [Meta data](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/read%20and%20display%20data/display_metadata.py) 
