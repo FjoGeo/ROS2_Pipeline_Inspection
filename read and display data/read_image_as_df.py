@@ -64,10 +64,14 @@ class ImageToDataFrame:
         # print(self.dataframe.describe())
         # print(self.dataframe.columns)
         # print(self.dataframe.shape)
+
+
+    def saveDataFrame(self, path):
+        self.dataframe.to_csv(path, index=False)
         
     
 if __name__ == "__main__":
     dbPath = "my_bag_1/my_bag_0.db3"
     topicID = 16
     imageDF = ImageToDataFrame(dbPath, topicID)
-    imageDF.displayDataFrame()
+    imageDF.saveDataFrame("image_data.csv")

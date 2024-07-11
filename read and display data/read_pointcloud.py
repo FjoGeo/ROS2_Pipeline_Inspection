@@ -24,7 +24,7 @@ class ReadPC:
 
 
     def getDataAndTime(self):
-        self.cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=17 LIMIT 3")
+        self.cursor.execute("SELECT timestamp, data FROM messages WHERE topic_id=17")
         rows = self.cursor.fetchall()
         self.conn.close()
         timestamps = [row[0] for row in rows]
@@ -69,8 +69,12 @@ class ReadPC:
         print(self.df.tail())
 
 
+    def saveDataFrames(self, path):
+        self.df.to_csv(path, index=False)
+
 
 if __name__ == "__main__":
-    db_path = "my_bag_1/my_bag_0.db3"
+    db_path = "my_bag/my_bag_0.db3"
     read_pc = ReadPC(db_path)
-    read_pc.printDataframes()
+    #read_pc.printDataframes()
+    read_pc.saveDataFrames("pointcloud.csv")
