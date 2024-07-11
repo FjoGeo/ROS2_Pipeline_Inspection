@@ -93,6 +93,7 @@ ros2 pkg create --build-type ament_python my_node_name
 - grant permission: `sudo chmod 777 /dev/ttyUSB*`
 - check the permission: `ls -l /dev/ttyUSB*`
 
+---
 
 ## 3. RealSense
 
@@ -111,119 +112,18 @@ pip install opencv-python
 
 ```
 
+- update and set
+  - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/package.xml)
+  - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
+  - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.py)
 
-- package.xml
-
-```
-<?xml version="1.0"?>
-<?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
-<package format="3">
-  <name>my_realsense</name>
-  <version>0.0.0</version>
-  <description>TODO: Package description</description>
-  <maintainer email="user@todo.todo">user</maintainer>
-  <license>TODO: License declaration</license>
-
-  <exec_depend>rclpy</exec_depend>
-  <exec_depend>std_msgs</exec_depend>
-  <exec_depend>pyserial</exec_depend>
-  <exec_depend>time</exec_depend>
-  <exec_depend>threading</exec_depend>
-  <exec_depend>numpy</exec_depend>
-  <exec_depend>cv2</exec_depend>
-  <exec_depend>pyrealsense2</exec_depend>
-
-  <test_depend>ament_copyright</test_depend>
-  <test_depend>ament_flake8</test_depend>
-  <test_depend>ament_pep257</test_depend>
-  <test_depend>python3-pytest</test_depend>
-
-
-
-  <export>
-    <build_type>ament_python</build_type>
-  </export>
-</package>
-```
-
-
-- setup.cfg
-```
-[develop]
-script_dir=$base/lib/my_realsense
-[install]
-install_scripts=$base/lib/my_realsense
-[optional]
-install_require=pyrealsense2
-```
-
-- setup.py
-
-```
-from setuptools import find_packages, setup
-
-package_name = 'my_realsense'
-
-setup(
-    name=package_name,
-    version='0.0.0',
-    packages=find_packages(exclude=['test']),
-    data_files=[
-        ('share/ament_index/resource_index/packages',
-            ['resource/' + package_name]),
-        ('share/' + package_name, ['package.xml']),
-    ],
-    install_requires=['setuptools','rclpy', 'sensor_msgs', 'cv_bridge', 'numpy', 'pyrealsense2'],
-    zip_safe=True,
-    maintainer='user',
-    maintainer_email='user@todo.todo',
-    description='TODO: Package description',
-    license='TODO: License declaration',
-    tests_require=['pytest'],
-    entry_points={
-        'console_scripts': [
-            'talker = my_realsense.talker:main',
-            'listener_rgb = my_realsense.sub_rgb:main',
-            'listener_depth = my_realsense.sub_depth:main',
-            'listener_pointcloud = my_realsense.sub_pc:main',
-        ],
-    },
-)
-```
-
+---
 
 ## Launch File
 
-- Start all Nodes and store the data in a `.bag` file
+- navigate to the directory where the [file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/launch/test_launch.py) is located and launch it
 
 ```
-from launch import LaunchDescription
-from launch_ros.actions import Node
-from launch.actions import ExecuteProcess
-
-def generate_launch_description():
-    return LaunchDescription([
-        Node(
-            package='rp_test',
-            executable='talker',
-            name='talker_node'
-        ),
-        Node(
-            package='witmotion_imu',
-            executable='talker',
-            name='talker_node2'
-
-        ),
-        Node(
-            package='my_realsense',
-            executable='talker',
-            name='talker_node3'
-        ),
-
-        ExecuteProcess(
-            cmd=['ros2', 'bag', 'record', '-o', 'my_bag', '/lidar_scan', '/serial_data', 'realsense/depth', 'realsense/pointcloud', 'realsense/rgb'],
-            output='screen'
-        )
- 
-    ])
+source install/setup.bash
+ros2 launch ./<name_of_the_file.py>
 ```
