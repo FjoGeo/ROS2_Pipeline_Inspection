@@ -1,6 +1,6 @@
 # Reading ROS2 bag files
 
-To read a recorded bag with Python you need multiple libraries:
+To read a recorded bag (which is a sqlite database) with Python you need multiple libraries:
 - pandas
 - sqlite3
 - rclpy
@@ -30,25 +30,11 @@ The recorded file consists of 4 tables:
 To deserialize the data you need to start rclpy and create a connection to the database.
 
 
-            from rclpy.serialization import deserialize_message
-            from std_msgs.msg import Int32, Float32, String
-
-
-            # Function to deserialize data
-            def deserialize_data(data, msg_type):
-                return deserialize_message(data, msg_type)
-
-
-            # Apply the deserialization to the "data" column
-            df['deserialized_data'] = df['data'].apply(lambda x: deserialize_data(x, Float32))
-
-            # Extract the actual data from the deserialized messages
-            df['deserialized_data'] = df['deserialized_data'].apply(lambda msg: msg.data)
-
-
 ## Current topic list
 
-`Note!` Add 1 to the id when using SQL. PointCloud2 has the id 17.
+
+To see the list of topics and tables use this [file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/read%20and%20display%20data/display_metadata.py) </br>
+`Note!` Add 1 to the id when using SQL. 
 
 
             0         /serial_data/HY         std_msgs/msg/Float32
