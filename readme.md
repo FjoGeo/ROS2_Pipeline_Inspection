@@ -3,7 +3,8 @@
 Collection of Python scripts and ROS2 drivers for the used sensors.
 
 
-<img title="a title" alt="Alt text" src="/images/in_pipe.jpg" width="500" height="500">
+<img title="a title" alt="Alt text" src="/images/in_pipe.jpg" width="400" height="400">
+<img title="a title" alt="Alt text" src="/images/platform.jpg" width="400" height="400">
 
 
 
