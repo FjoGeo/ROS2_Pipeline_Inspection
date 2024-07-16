@@ -12,74 +12,46 @@ import sensor_msgs_py.point_cloud2 as pc2
 class RealSensePublisher(Node):
     def __init__(self):
         super().__init__('realsense_publisher')
-        
-        # Create publishers for camera 1
-        self.rgb_publisher1 = self.create_publisher(Image, 'realsense1/rgb', 10)
-        self.depth_publisher1 = self.create_publisher(Image, 'realsense1/depth', 10)
-        self.pc_publisher1 = self.create_publisher(PointCloud2, 'realsense1/pointcloud', 10)
-
-        # Create publishers for camera 2
-        self.rgb_publisher2 = self.create_publisher(Image, 'realsense2/rgb', 10)
-        self.depth_publisher2 = self.create_publisher(Image, 'realsense2/depth', 10)
-        self.pc_publisher2 = self.create_publisher(PointCloud2, 'realsense2/pointcloud', 10)
-
+        self.rgb_publisher = self.create_publisher(Image, 'realsense/rgb', 10)
+        self.depth_publisher = self.create_publisher(Image, 'realsense/depth', 10)
+        self.pc_publisher = self.create_publisher(PointCloud2, 'realsense/pointcloud', 10)
         self.timer = self.create_timer(0.1, self.timer_callback)  # Publish at 10Hz
         self.bridge = CvBridge()
 
-        self.devices = rs.context().query_devices()
-        self.serial_numbers = [dev.get_info(rs.camera_info.serial_number) for dev in self.devices]
+        # Initialize RealSense
+        self.pipeline = rs.pipeline()
+        self.config = rs.config()
+        self.config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
+        self.config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
 
-        # Initialize RealSense for two cameras
-        self.pipeline1, self.config1 = self.configure_camera(self.serial_numbers[0])
-        self.pipeline2, self.config2 = self.configure_camera(self.serial_numbers[1])
-
-        self.pipeline1.start(self.config1)
-        self.pipeline2.start(self.config2)
-
-    def configure_camera(self, serial_number):
-        pipeline = rs.pipeline()
-        config = rs.config()
-        config.enable_stream(rs.stream.depth, 640, 480, rs.format.z16, 30)
-        config.enable_stream(rs.stream.color, 640, 480, rs.format.bgr8, 30)
-        config.enable_device(serial_number)
-        return pipeline, config
+        self.pipeline.start(self.config)
 
     def timer_callback(self):
-        # Get frames from camera 1
-        frames1 = self.pipeline1.wait_for_frames()
-        depth_frame1 = frames1.get_depth_frame()
-        color_frame1 = frames1.get_color_frame()
+        frames = self.pipeline.wait_for_frames()
+        depth_frame = frames.get_depth_frame()
+        color_frame = frames.get_color_frame()
+        if not depth_frame or not color_frame:
+            return
 
-        # Get frames from camera 2
-        frames2 = self.pipeline2.wait_for_frames()
-        depth_frame2 = frames2.get_depth_frame()
-        color_frame2 = frames2.get_color_frame()
-
-        if depth_frame1 and color_frame1:
-            self.publish_data(depth_frame1, color_frame1, self.rgb_publisher1, self.depth_publisher1, self.pc_publisher1, "camera1_link")
-        if depth_frame2 and color_frame2:
-            self.publish_data(depth_frame2, color_frame2, self.rgb_publisher2, self.depth_publisher2, self.pc_publisher2, "camera2_link")
-
-    def publish_data(self, depth_frame, color_frame, rgb_publisher, depth_publisher, pc_publisher, frame_id):
         # Convert images to numpy arrays
         depth_image = np.asanyarray(depth_frame.get_data())
         color_image = np.asanyarray(color_frame.get_data())
 
         # Publish RGB image
         rgb_msg = self.bridge.cv2_to_imgmsg(color_image, encoding="bgr8")
-        rgb_publisher.publish(rgb_msg)
+        self.rgb_publisher.publish(rgb_msg)
 
         # Publish depth image
         depth_msg = self.bridge.cv2_to_imgmsg(depth_image, encoding="16UC1")
-        depth_publisher.publish(depth_msg)
+        self.depth_publisher.publish(depth_msg)
 
         # Publish point cloud
-        points = self.create_pointcloud(depth_frame, color_image, color_frame.profile.as_video_stream_profile().intrinsics, frame_id)
-        pc_publisher.publish(points)
+        points = self.create_pointcloud(depth_frame, color_image, color_intrin=color_frame.profile.as_video_stream_profile().intrinsics)
+        self.pc_publisher.publish(points)
 
-        self.get_logger().info(f'Published RGB, depth, and point cloud data for {frame_id}')
+        self.get_logger().info('Published RGB, depth, and point cloud data')
 
-    def create_pointcloud(self, depth_frame, color_image, color_intrin, frame_id):
+    def create_pointcloud(self, depth_frame, color_image, color_intrin):
         # Get intrinsics
         depth_intrin = depth_frame.profile.as_video_stream_profile().intrinsics
         depth_to_color_extrin = depth_frame.profile.get_extrinsics_to(depth_frame.profile)
@@ -87,7 +59,7 @@ class RealSensePublisher(Node):
         # PointCloud2 setup
         header = Header()
         header.stamp = self.get_clock().now().to_msg()
-        header.frame_id = frame_id
+        header.frame_id = "camera_link"
 
         points = []
         for y in range(depth_intrin.height):

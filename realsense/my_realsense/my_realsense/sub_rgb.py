@@ -9,18 +9,31 @@ import cv2
 class RGBSubscriber(Node):
     def __init__(self):
         super().__init__('rgb_subscriber')
-        self.subscription = self.create_subscription(
+        
+        # Create subscriptions for camera 1 and camera 2
+        self.subscription1 = self.create_subscription(
             Image,
-            'realsense/rgb',
-            self.rgb_callback,
+            'realsense1/rgb',
+            self.rgb_callback1,
             10
         )
-        self.subscription  # prevent unused variable warning
+        self.subscription2 = self.create_subscription(
+            Image,
+            'realsense2/rgb',
+            self.rgb_callback2,
+            10
+        )
+
         self.bridge = CvBridge()
 
-    def rgb_callback(self, msg):
+    def rgb_callback1(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
-        cv2.imshow("RGB Image", cv_image)
+        cv2.imshow("RGB Image Camera 1", cv_image)
+        cv2.waitKey(1)  # Keep the window open until a key is pressed
+
+    def rgb_callback2(self, msg):
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='bgr8')
+        cv2.imshow("RGB Image Camera 2", cv_image)
         cv2.waitKey(1)  # Keep the window open until a key is pressed
 
 def main(args=None):
