@@ -5,26 +5,49 @@ from std_msgs.msg import Float32, Int32
 class LidarSubscriber(Node):
     def __init__(self):
         super().__init__('lidar_subscriber')
-        self.subscription_quality = self.create_subscription(
+        self.subscription_quality1 = self.create_subscription(
             Int32,
-            'lidar_quality',
+            'lidar/quality1',
             self.listener_callback_quality,
             10)
-        self.subscription_quality  # prevent unused variable warning
+        self.subscription_quality1  # prevent unused variable warning
 
-        self.subscription_angle = self.create_subscription(
+        self.subscription_angle1 = self.create_subscription(
             Float32,
-            'lidar_angle',
+            'lidar/angle1',
             self.listener_callback_angle,
             10)
-        self.subscription_angle  # prevent unused variable warning
+        self.subscription_angle1  # prevent unused variable warning
 
-        self.subscription_distance = self.create_subscription(
+        self.subscription_distance1 = self.create_subscription(
             Float32,
-            'lidar_distance',
+            'lidar/distance1',
             self.listener_callback_distance,
             10)
-        self.subscription_distance  # prevent unused variable warning
+        self.subscription_distance1  # prevent unused variable warning
+
+
+
+        self.subscription_quality2 = self.create_subscription(
+            Int32,
+            'lidar/quality2',
+            self.listener_callback_quality,
+            10)
+        self.subscription_quality2  # prevent unused variable warning
+
+        self.subscription_angle2 = self.create_subscription(
+            Float32,
+            'lidar/angle2',
+            self.listener_callback_angle,
+            10)
+        self.subscription_angle2  # prevent unused variable warning
+
+        self.subscription_distance2 = self.create_subscription(
+            Float32,
+            'lidar/distance2',
+            self.listener_callback_distance,
+            10)
+        self.subscription_distance2  # prevent unused variable warning
 
     def listener_callback_quality(self, msg):
         self.get_logger().info(f'Received quality: {msg.data}')
