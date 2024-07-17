@@ -22,13 +22,15 @@ def generate_launch_description():
         ),
 
         ExecuteProcess(
-            cmd=['ros2', 'bag', 'record', '-o', 'my_bag', 
-                 'lidar_quality',  'lidar_angle', 'lidar_distance', 
+            cmd=['ros2', 'bag', 'record', '-o', 'bagfile_for_sensor', 
+                 'lidar/quality1',  'lidar/angle1', 'lidar/distance1', 
+                 'lidar/quality2',  'lidar/angle2', 'lidar/distance2', 
                  '/serial_data/AccX', '/serial_data/AccY', '/serial_data/AccZ', 
                  '/serial_data/AngX', '/serial_data/AngY', '/serial_data/AngZ',
                  '/serial_data/AsX', '/serial_data/AsY', '/serial_data/AsZ',
-                 '/serial_data/HX', '/serial_data/HY', '/serial_data/HZ',
-                 '/realsense/rgb', '/realsense/depth', '/realsense/pointcloud',],
+                 '/serial_data/HX', '/serial_data/HY', '/serial_data/HZ',           
+                 '/realsense1/rgb', '/realsense1/depth', '/realsense1/pointcloud',
+                 '/realsense2/rgb', '/realsense2/depth', '/realsense2/pointcloud',],
             output='screen'
         )
  
