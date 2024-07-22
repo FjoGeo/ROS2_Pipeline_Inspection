@@ -123,7 +123,7 @@ pip install opencv-python
 
 ## Launch File
 
-- navigate to the directory where the [file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/launch/test_launch.py) is located and launch it
+- navigate to the directory where the [file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/launch/launch_all_sensors.py) is located and launch it
 
 ```
 source install/setup.bash
