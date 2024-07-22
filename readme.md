@@ -1,10 +1,19 @@
 # 3D-OLE / 5G AKI
 
-Collection of Python scripts and ROS2 drivers for the used sensors.
 
+Welcome to the repository for **3D-OLE and 5G AKI**.
 
 <img title="5G AKI"  src="/images/platform.jpg" width="400" height="300">
 
+This project integrates and manages various sensors to facilitate efficient inspection processes. The primary sensors used are:
+
+- **WitMotion HW T9053-485**
+- **RPLIDAR S2**
+- **RealSense D345i**
+
+These sensors work together to provide comprehensive data for accurate pipeline and crane inspections, leveraging the power of ROS2 for seamless sensor communication and data processing.
+
+Feel free to explore the code, contribute, and raise issues or pull requests to enhance the project's capabilities.
 
 
 
