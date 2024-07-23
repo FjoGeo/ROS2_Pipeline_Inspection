@@ -86,8 +86,19 @@ class SerialPublisher(Node):
         msg_AngZ.data = device_data.deviceData['AngZ']
         self.publisher_AngZ.publish(msg_AngZ)
 
-        self.get_logger().info('Publishing: AccX=%s, AccY=%s, AccZ=%s, AsX=%s, AsY=%s, AsZ=%s, HX=%s, HY=%s, HZ=%s, AngX=%s, AngY=%s, AngZ=%s' % (msg_AccX.data, msg_AccY.data, msg_AccZ.data, msg_AsX.data, msg_AsY.data, msg_AsZ.data, msg_HX.data, msg_HY.data, msg_HZ.data, msg_AngX.data, msg_AngY.data, msg_AngZ.data))
+        log_msg = (
+            'Publishing: AccX={:.2f}, AccY={:.2f}, AccZ={:.2f}, '
+            'AsX={:.2f}, AsY={:.2f}, AsZ={:.2f}, '
+            'HX={:.2f}, HY={:.2f}, HZ={:.2f}, '
+            'AngX={:.2f}, AngY={:.2f}, AngZ={:.2f}'
+        ).format(
+            msg_AccX.data, msg_AccY.data, msg_AccZ.data,
+            msg_AsX.data, msg_AsY.data, msg_AsZ.data,
+            msg_HX.data, msg_HY.data, msg_HZ.data,
+            msg_AngX.data, msg_AngY.data, msg_AngZ.data
+        )
 
+        self.get_logger().info(log_msg)
 
 def main(args=None):
     rclpy.init(args=args)
