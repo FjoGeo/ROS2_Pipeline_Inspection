@@ -96,10 +96,10 @@ ros2 pkg create --build-type ament_python my_node_name
 - check the permission: `ls -l /dev/ttyUSB*`
 
 ### Retuned Values
-- Acc: Acceleration - These values measure the acceleration forces in different directions
-- As: Gyroscope - These values measure the rate of rotation around each axis
-- H: Magnetometer - These values measure the magnetic field strength in different directions
-- Ang: Euler Angles - These values describe the orientation of the sensor in space
+- `Acc`: Acceleration - These values measure the acceleration forces in different directions
+- `As`: Gyroscope - These values measure the rate of rotation around each axis
+- `H`: Magnetometer - These values measure the magnetic field strength in different directions
+- `Ang`: Euler Angles - These values describe the orientation of the sensor in space
 
 ---
 
