@@ -25,7 +25,18 @@ class DisplayMetaData:
 
     def getAllTopics(self):
         print("\n\n")
-        print(pd.read_sql_query("SELECT name, type FROM topics", self.conn))
+        df = pd.read_sql_query("""SELECT 
+                                        id, name, type 
+                                    FROM topics 
+                                        where 
+                                    name LIKE '%HZ' OR name LIKE '%HY' OR name LIKE '%HX' 
+                                    OR name LIKE '%AccX' OR name LIKE '%AccY' OR name LIKE '%AccZ'
+                                    OR name LIKE '%AsY' OR name LIKE '%AsX' OR name LIKE '%AsZ'
+                                    OR name LIKE '%AngX' OR name LIKE '%AngY' OR name LIKE '%AngZ'
+                                    """, self.conn)
+
+        df['name'] = df['name'].str.rsplit('/').str[-1]
+        print(df)
 
 
 
