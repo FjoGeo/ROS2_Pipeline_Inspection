@@ -13,9 +13,9 @@ class ImageReader:
         self.cursor = self.conn.cursor()
         self.rclpy = rclpy
         self.rclpy.init()
-        self.dataframe = None
         self.topicID = topicID
         self.images = []
+        self.timestamps = None
         self.deserializeDataFrame()
 
 
@@ -26,7 +26,7 @@ class ImageReader:
 
 
     def getDataFromDB(self):
-        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID} LIMIT 2")
+        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID}")
         rows = self.cursor.fetchall()
         self.conn.close()
 
@@ -35,10 +35,14 @@ class ImageReader:
 
     def deserializeDataFrame(self):
         rows = self.getDataFromDB()
+        timestamps = []
         for row in rows:
-            _, data = row
+            timestamp, data = row
             image = self.deserializeImage(data)
             self.images.append(image)
+            timestamps.append(timestamp)
+        self.timestamps = timestamps
+        
     
 
     def displayImages(self):
@@ -50,9 +54,17 @@ class ImageReader:
             cv2.destroyAllWindows()
         self.rclpy.shutdown()
 
+    def saveImages(self, path):
+        bridge = CvBridge()
+        for i, (image, timestamp) in enumerate(zip(self.images, self.timestamps)):
+            cv_image = bridge.imgmsg_to_cv2(image, desired_encoding="passthrough")
+            cv2.imwrite(f"{path}/image_{timestamp}.jpg", cv_image)
+        self.rclpy.shutdown()
+
 
 if __name__ == "__main__":
     dbPath = "my_bag_1/my_bag_0.db3"
     topicID = 16
     imageReader = ImageReader(dbPath, topicID)
-    imageReader.displayImages()
+    # imageReader.displayImages()
+    imageReader.saveImages("images")
