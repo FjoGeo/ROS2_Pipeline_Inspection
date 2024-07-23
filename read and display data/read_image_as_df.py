@@ -26,7 +26,7 @@ class ImageToDataFrame:
 
 
     def getDataFromDB(self):
-        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID} LIMIT 2")
+        self.cursor.execute(f"SELECT timestamp, data FROM messages WHERE topic_id = {self.topicID}")
         rows = self.cursor.fetchall()
         self.conn.close()
 
@@ -60,10 +60,6 @@ class ImageToDataFrame:
     def displayDataFrame(self):
         print(self.dataframe.head())
         print(self.dataframe.tail())
-        # print(self.dataframe.info())
-        # print(self.dataframe.describe())
-        # print(self.dataframe.columns)
-        # print(self.dataframe.shape)
 
 
     def saveDataFrame(self, path):
@@ -74,4 +70,5 @@ if __name__ == "__main__":
     dbPath = "my_bag_1/my_bag_0.db3"
     topicID = 16
     imageDF = ImageToDataFrame(dbPath, topicID)
+    # imageDF.displayDataFrame()
     imageDF.saveDataFrame("image_data.csv")
