@@ -74,7 +74,19 @@ class SerialPublisher(Node):
         msg_HZ.data = device_data.deviceData['HZ']
         self.publisher_HZ.publish(msg_HZ)
 
-        self.get_logger().info('Publishing: AccX=%s, AccY=%s, AccZ=%s, AsX=%s, AsY=%s, AsZ=%s, HX=%s, HY=%s, HZ=%s' % (msg_AccX.data, msg_AccY.data, msg_AccZ.data, msg_AsX.data, msg_AsY.data, msg_AsZ.data, msg_HX.data, msg_HY.data, msg_HZ.data))
+        msg_AngX = Float32()
+        msg_AngX.data = device_data.deviceData['AngX']
+        self.publisher_AngX.publish(msg_AngX)
+
+        msg_AngY = Float32()
+        msg_AngY.data = device_data.deviceData['AngY']
+        self.publisher_AngY.publish(msg_AngY)
+
+        msg_AngZ = Float32()
+        msg_AngZ.data = device_data.deviceData['AngZ']
+        self.publisher_AngZ.publish(msg_AngZ)
+
+        self.get_logger().info('Publishing: AccX=%s, AccY=%s, AccZ=%s, AsX=%s, AsY=%s, AsZ=%s, HX=%s, HY=%s, HZ=%s, AngX=%s, AngY=%s, AngZ=%s' % (msg_AccX.data, msg_AccY.data, msg_AccZ.data, msg_AsX.data, msg_AsY.data, msg_AsZ.data, msg_HX.data, msg_HY.data, msg_HZ.data, msg_AngX.data, msg_AngY.data, msg_AngZ.data))
 
 
 def main(args=None):
