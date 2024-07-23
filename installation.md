@@ -44,6 +44,12 @@ pip install pyserial
 - grant permission: `sudo chmod 777 /dev/ttyUSB*`
 - check the permission: `ls -l /dev/ttyUSB`
 
+### Retuned Values
+- Acc: Acceleration - These values measure the acceleration forces in different directions
+- As: Gyroscope - These values measure the rate of rotation around each axis
+- H: Magnetometer - These values measure the magnetic field strength in different directions
+- Ang: Euler Angles - These values describe the orientation of the sensor in space
+
 
 ### Documentation
 - Links:
