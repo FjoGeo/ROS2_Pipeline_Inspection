@@ -22,6 +22,24 @@ Feel free to explore the code, contribute, and raise issues or pull requests to 
 - The instruction can be found [here](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/installation.md)
 
 
+## QuickStart
+
+- open ports
+  - ```sudo chmod 777 /dev/ttyUSB*```
+- navigate into ROS2 directory
+  - ```cd ~/ros2_ws/```
+- source
+  - ``` source install/setup.bash ```
+- launch all sensors
+  - ``` cd launch/ ```
+  - ``` ros2 launch launch_all.py ```
+- or launching sensors separately
+  - ```cd ~/ros2_ws/```
+  - ```ros2 run rp_test talker```
+  - ```ros2 run my_realsense talker```
+  - ```ros2 run witmotion_imu talker```
+
+  
 ## Instructions
 
 - All about the recorded [bag file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/bag%20file%20info.md)
