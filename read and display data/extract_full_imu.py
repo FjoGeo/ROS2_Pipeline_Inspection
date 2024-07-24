@@ -23,7 +23,9 @@ class IMUReader:
         
 
     def getDataFrame(self):
-        df = pd.read_sql_query("SELECT * FROM messages WHERE topic_id BETWEEN 1 AND 12", self.conn)
+        topic_ids = ','.join(map(str, self.dfTopics['topic_id'].tolist()))
+        query = f"SELECT * FROM messages WHERE topic_id IN ({topic_ids})"
+        df = pd.read_sql_query(query, self.conn)
         return df
     
 
@@ -33,14 +35,23 @@ class IMUReader:
         df['deserialized_data'] = df['deserialized_data'].apply(lambda msg: msg.data)
         self.dataframe = df[['timestamp', 'topic_id','deserialized_data']]
         self.dataframe.columns = ['timestamp','topic_id', 'data']
+        # print(self.dataframe.head(12))
         self.rclpy.shutdown()
 
     def getTopics(self):
-        df = pd.read_sql_query("SELECT id, name, type FROM topics", self.conn)
+        df = pd.read_sql_query("""SELECT 
+                                        id, name, type 
+                                    FROM topics 
+                                        WHERE 
+                                    name LIKE '%lidar%' OR name LIKE '%HY' OR name LIKE '%HX' 
+                                    OR name LIKE '%AccX' OR name LIKE '%AccY' OR name LIKE '%AccZ'
+                                    OR name LIKE '%AsY' OR name LIKE '%AsX' OR name LIKE '%AsZ'
+                                    OR name LIKE '%AngX' OR name LIKE '%AngY' OR name LIKE '%AngZ'
+                                    """, self.conn)
         df['name'] = df['name'].str.rsplit('/').str[-1]
-        df = df[df['id'].between(1, 12)]
         df.columns = ['topic_id', 'topic_name', 'type']
         self.dfTopics = df
+        # print(df.head(12))
         
 
     def mergeDataFrames(self):
@@ -59,7 +70,7 @@ class IMUReader:
         self.dataframe['converted_timestamp'] = pd.to_datetime(self.dataframe['timestamp'], unit='ns')
 
     def printDataFrame(self):
-        print(self.dataframe.head(20))
+        print(self.dataframe.head(12))
 
     def saveDataFrame(self, path):
         self.dataframe.to_csv(path, index=False)
