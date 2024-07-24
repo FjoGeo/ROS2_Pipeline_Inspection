@@ -24,6 +24,8 @@ Feel free to explore the code, contribute, and raise issues or pull requests to 
 
 ## QuickStart
 
+Connect the LiDAR first and then the IMU!
+
 - open ports
   - ```sudo chmod 777 /dev/ttyUSB*```
 - navigate into ROS2 directory
