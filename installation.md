@@ -135,3 +135,30 @@ pip install opencv-python
 source install/setup.bash
 ros2 launch ./<name_of_the_file.py>
 ```
+---
+
+## Display (ZenScreen)
+
+Disable Secure Boot in the BIOS, then reboot, and run the following:
+```
+# Make this directory if it doesn't exist, and cd into it
+mkdir -p ~/Downloads/Install_Files/DisplayLink
+cd ~/Downloads/Install_Files/DisplayLink
+
+# Download the Ubuntu APT package provided by Synaptics.com, the official 
+# makers of DisplayLink
+wget https://www.synaptics.com/sites/default/files/Ubuntu/pool/stable/main/all/synaptics-repository-keyring.deb
+
+# Install the DisplayLink APT package keyring
+sudo apt install ./synaptics-repository-keyring.deb
+
+# Update your APT package cache
+sudo apt update
+
+# Install the DisplayLink driver provided by Synaptics.com, the official source
+sudo apt install displaylink-driver
+
+# Reboot. 
+# Now it is plug-and-play. Plug in your DisplayLink adapter and it just works.
+# It may take up to 5~10 seconds to recognize a monitor. 
+```
