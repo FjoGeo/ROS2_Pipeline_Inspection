@@ -1,15 +1,28 @@
 # Reading ROS2 bag files
 
 To read a recorded bag (which is a sqlite database) with Python you need multiple libraries:
-- pandas
-- catkin_pkg
-- rclpy
-  https://docs.ros.org/en/humble/Installation/Alternatives/Ubuntu-Development-Setup.html#id9
-  Build the code in the workspace
-  
-  https://index.ros.org/r/rclpy/
 
-- std_msgs
+                sudo apt-get install python-is-python3
+                pip install pandas
+                pip install catkin_pkg
+
+- rclpy: https://index.ros.org/r/rclpy/
+  
+                sudo apt install python3-sphinx python3-pip
+                sudo -H pip3 install sphinx_autodoc_typehints
+Source your ROS 2 installation, then:
+                mkdir -p rclpy_ws/src
+                cd rclpy_ws/src
+                git clone https://github.com/ros2/rclpy.git
+                cd ..
+                colcon build --symlink-install
+Source workspace and build docs:
+                source install/setup.bash
+                cd src/rclpy/rclpy/docs
+                make html
+                
+                
+
 
 ## Content of the bag file
 
