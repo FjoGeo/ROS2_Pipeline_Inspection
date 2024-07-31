@@ -2,8 +2,13 @@
 
 To read a recorded bag (which is a sqlite database) with Python you need multiple libraries:
 - pandas
-- sqlite3
+- catkin_pkg
 - rclpy
+  https://docs.ros.org/en/humble/Installation/Alternatives/Ubuntu-Development-Setup.html#id9
+  Build the code in the workspace
+  
+  https://index.ros.org/r/rclpy/
+
 - std_msgs
 
 ## Content of the bag file
