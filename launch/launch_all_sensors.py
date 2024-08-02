@@ -29,8 +29,9 @@ def generate_launch_description():
                  '/serial_data/AngX', '/serial_data/AngY', '/serial_data/AngZ',
                  '/serial_data/AsX', '/serial_data/AsY', '/serial_data/AsZ',
                  '/serial_data/HX', '/serial_data/HY', '/serial_data/HZ',           
-                 '/realsense1/rgb', '/realsense1/depth', '/realsense1/pointcloud',
-                 '/realsense2/rgb', '/realsense2/depth', '/realsense2/pointcloud',],
+                 '/realsense1/rgb', '/realsense1/depth', '/realsense1/pointcloud', '/realsense1/accel', '/realsense1/gyro',
+                 '/realsense2/rgb', '/realsense2/depth', '/realsense2/pointcloud', '/realsense2/accel', '/realsense2/gyro'          
+                ],
             output='screen'
         )
  
