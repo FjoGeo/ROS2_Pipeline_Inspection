@@ -80,7 +80,7 @@ ros2 run rp_test talker
 
 ```bash
 cd ~/ros2_ws/src
-ros2 pkg create --build-type ament_python my_node_name
+ros2 pkg create --build-type ament_python witmotion_imu
 ```
 
 - update and set
