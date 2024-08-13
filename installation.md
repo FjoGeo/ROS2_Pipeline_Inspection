@@ -120,6 +120,12 @@ pip install opencv-python
 
 ```
 
+```bash
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python my_realsense
+```
+
+
 - update and set
   - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/package.xml)
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
