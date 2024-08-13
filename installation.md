@@ -58,8 +58,9 @@ pip install pyserial
 
 ### Starting the node
 ```
+cd ~/ros2_ws
 source install/setup.bash
-ros2 run node_name python_file.py
+ros2 run rp_test talker
 ```
 
 
