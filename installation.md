@@ -130,8 +130,24 @@ ros2 pkg create --build-type ament_python my_realsense
   - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/package.xml)
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
   - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.py)
+ 
+from  https://github.com/IntelRealSense/librealsense/blob/master/doc/installation.md#prerequisites
+Install librealsense2
+Clone the librealsense2 repo
+```bash
+git clone https://github.com/IntelRealSense/librealsense.git
+```
+Run Intel Realsense permissions script from librealsense2 root directory:
+
+```bash
+cd librealsense
+./scripts/setup_udev_rules.sh
+```
+
+
 
 copy the talker.py from     ROS_Tutotrial/realsense/my_realsense/my_realsense/ to ros2_ws/src/my_realsense/my_realsense
+
 
 to build the package:
 ```bash
