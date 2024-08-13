@@ -88,7 +88,7 @@ ros2 pkg create --build-type ament_python witmotion_imu
   - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.py)
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.cfg)
 
-copy the talker.py from     ROS_Tutotrial/,,/,,/,,/ to ros2_ws/src/,,/,,
+copy the publisher/talker.py file from `ROS_Tutotrial/,,/,,/,,/` to `ros2_ws/src/,,/,,`
 
 
 to build the package:
@@ -103,6 +103,13 @@ colcon build
 - device not detected: `sudo apt remove brltty` , then unplug and replug it
 - grant permission: `sudo chmod 777 /dev/ttyUSB*`
 - check the permission: `ls -l /dev/ttyUSB*`
+
+### Starting the node
+```
+cd ~/ros2_ws
+source install/setup.bash
+ros2 run witmotion_imu talker
+```
 
 ### Retuned Values
 - `Acc`: Acceleration - These values measure the acceleration forces in different directions
