@@ -18,7 +18,7 @@ We use ROS2 [Humble](https://docs.ros.org/en/humble/index.html)
 
 ```bash
 cd ~/ros2_ws/src
-ros2 pkg create --build-type ament_python my_node_name
+ros2 pkg create --build-type ament_python rp_test
 ```
 
 
