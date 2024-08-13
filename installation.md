@@ -131,7 +131,7 @@ ros2 pkg create --build-type ament_python my_realsense
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
   - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.py)
 
-copy the talker from     ROS_Tutotrial/realsense/my_realsense/my_realsense/ to ros2_ws/src/my_realsense/my_realsense
+copy the talker.py from     ROS_Tutotrial/realsense/my_realsense/my_realsense/ to ros2_ws/src/my_realsense/my_realsense
 
 to build the package:
 ```bash
