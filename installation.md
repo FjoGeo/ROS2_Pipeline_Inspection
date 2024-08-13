@@ -42,7 +42,7 @@ pip install pyserial
 ### Troubleshooting
 - device not detected: `sudo apt remove brltty` , then unplug and replug it
 - grant permission: `sudo chmod 777 /dev/ttyUSB*`
-- check the permission: `ls -l /dev/ttyUSB*
+- check the permission: `ls -l /dev/ttyUSB*`
 
 
 ### Documentation
