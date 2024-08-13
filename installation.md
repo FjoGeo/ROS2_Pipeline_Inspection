@@ -126,10 +126,16 @@ ros2 pkg create --build-type ament_python my_realsense
 ```
 
 
-- update and set
+- update and set in src/my_realsense
   - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/package.xml)
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
   - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.py)
+
+to build the package:
+```bash
+cd ~/ros2_ws
+colcon build
+```
 
 ---
 
