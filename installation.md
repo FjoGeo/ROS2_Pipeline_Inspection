@@ -42,7 +42,7 @@ pip install pyserial
 ### Troubleshooting
 - device not detected: `sudo apt remove brltty` , then unplug and replug it
 - grant permission: `sudo chmod 777 /dev/ttyUSB*`
-- check the permission: `ls -l /dev/ttyUSB`
+- check the permission: `ls -l /dev/ttyUSB*
 
 
 ### Documentation
@@ -87,8 +87,16 @@ ros2 pkg create --build-type ament_python my_node_name
   - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.py)
   - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.cfg)
 
-- create a publisher and subscriber in `node_dir/node_dir/`
-- build the Node `colcon build --packages-select my_node_name`
+copy the talker.py from     ROS_Tutotrial/,,/,,/,,/ to ros2_ws/src/,,/,,
+
+
+to build the package:
+```bash
+cd ~/ros2_ws
+colcon build
+```
+
+  
 
 ### Troubleshooting
 - device not detected: `sudo apt remove brltty` , then unplug and replug it
