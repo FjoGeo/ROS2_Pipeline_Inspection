@@ -17,7 +17,31 @@ def generate_launch_description():
 
         Node(
             package='my_realsense',
-            executable='talker',
+            executable='talker_rgb',
+            name='my_realsense_talker'
+        ),
+
+        Node(
+            package='my_realsense',
+            executable='talker_depth',
+            name='my_realsense_talker'
+        ),
+
+        Node(
+            package='my_realsense',
+            executable='talker_pc',
+            name='my_realsense_talker'
+        ),
+
+        Node(
+            package='my_realsense',
+            executable='talker_acc_gyro',
+            name='my_realsense_talker'
+        ),
+
+        Node(
+            package='my_realsense',
+            executable='talker_IR',
             name='my_realsense_talker'
         ),
 
@@ -30,7 +54,8 @@ def generate_launch_description():
                  '/serial_data/AsX', '/serial_data/AsY', '/serial_data/AsZ',
                  '/serial_data/HX', '/serial_data/HY', '/serial_data/HZ',           
                  '/realsense1/rgb', '/realsense1/depth', '/realsense1/pointcloud', '/realsense1/accel', '/realsense1/gyro',
-                 '/realsense2/rgb', '/realsense2/depth', '/realsense2/pointcloud', '/realsense2/accel', '/realsense2/gyro'          
+                 '/realsense2/rgb', '/realsense2/depth', '/realsense2/pointcloud', '/realsense2/accel', '/realsense2/gyro',
+                 '/realsense1/IR', '/realsense2/IR'
                 ],
             output='screen'
         )
