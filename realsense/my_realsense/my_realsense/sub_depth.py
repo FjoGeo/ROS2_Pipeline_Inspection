@@ -9,18 +9,31 @@ import cv2
 class DepthSubscriber(Node):
     def __init__(self):
         super().__init__('depth_subscriber')
-        self.subscription = self.create_subscription(
+        self.subscription1 = self.create_subscription(
             Image,
-            'realsense/depth',
-            self.depth_callback,
+            'realsense1/depth',
+            self.depth_callback1,
             10
         )
-        self.subscription  # prevent unused variable warning
+
+        self.subscription2 = self.create_subscription(
+            Image,
+            'realsense2/depth',
+            self.depth_callback2,
+            10
+        )
+        
+
         self.bridge = CvBridge()
 
-    def depth_callback(self, msg):
+    def depth_callback1(self, msg):
         cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
-        cv2.imshow("Depth Image", cv_image)
+        cv2.imshow("Depth Image 1", cv_image)
+        cv2.waitKey(1)  # Keep the window open until a key is pressed
+    
+    def depth_callback2(self, msg):
+        cv_image = self.bridge.imgmsg_to_cv2(msg, desired_encoding='passthrough')
+        cv2.imshow("Depth Image 2", cv_image)
         cv2.waitKey(1)  # Keep the window open until a key is pressed
 
 def main(args=None):
