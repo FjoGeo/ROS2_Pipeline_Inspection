@@ -21,6 +21,7 @@ setup(
     entry_points={
         'console_scripts': [
             'talker = rp_test.rp_publisher:main',
+            'talker_single = rp_test.rp_publisher_single:main',
             'listener = rp_test.rp_subscriber:main',
         ],
     },
