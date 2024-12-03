@@ -18,7 +18,7 @@ class RealSenseRGBPublisher(Node):
                 ('rgb_topic2', 'realsense2/rgb'),
                 ('resolution', (640, 480)),
                 ('frame_rate', 30),
-                ('publish_rate', 10.0)
+                ('publish_rate', 200.0) # 10
             ]
         )
 
