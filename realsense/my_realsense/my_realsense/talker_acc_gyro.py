@@ -36,7 +36,7 @@ class RealSenseIMUPublisher(Node):
 
                 ('gyro_topic2', 'realsense2/gyro'),
 
-                ('publish_rate', 10.0)
+                ('publish_rate', 200.0) # 10
 
             ]
 
