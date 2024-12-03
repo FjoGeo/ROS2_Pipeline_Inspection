@@ -15,7 +15,7 @@ def generate_launch_description():
             name='my_realsense_talker'
         ),
         ExecuteProcess(
-            cmd=['ros2', 'bag', 'record', '-o', 'bagfile_for_sensor',          
+            cmd=['ros2', 'bag', 'record', '-o', 'bag_dual_camera',          
                   '/realsense1/pointcloud', '/realsense1/accel', '/realsense1/gyro',
                  '/realsense2/pointcloud', '/realsense2/accel', '/realsense2/gyro'
                 ],
