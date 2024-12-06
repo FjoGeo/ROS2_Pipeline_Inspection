@@ -44,6 +44,8 @@ setup(
 
             'talker_depth = my_realsense.talker_depth:main',
 
+            'talker_rgb_pc = my_realsense.talker_rgb_pc:main',
+            
             'talker_rgb = my_realsense.talker_rgb:main',
 
             'talker_pc = my_realsense.talker_pc:main',
