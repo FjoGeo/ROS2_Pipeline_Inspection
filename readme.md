@@ -34,6 +34,9 @@ All sensors are connected to an **Intel NUC 13 Pro**.
   - [External Monitor (Asus Zenscreen)](#external-monitor)
 - [Quickstart](#quickstart)
 - [Data extraction](#data-extraction)
+  - [Setup](#setup-data-extraction)
+  - [Content](#data-content)
+  - [Deserialization](#data-deserialization)
 
 
 ## Installation
@@ -242,5 +245,52 @@ Using a launch file will record the data in a bag file.
 
 ## Data extraction
 
-- All about the recorded [bag file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/bag%20file%20info.md)
+### Setup data extraction
 
+To read a recorded bag  with Python you need multiple libraries:
+
+                sudo apt-get install python-is-python3
+                pip install pandas
+                pip install catkin_pkg
+
+- rclpy: https://index.ros.org/r/rclpy/
+  
+                sudo apt install python3-sphinx python3-pip
+                sudo -H pip3 install sphinx_autodoc_typehints
+Source your ROS 2 installation, then:
+
+                mkdir -p rclpy_ws/src
+                cd rclpy_ws/src
+                git clone https://github.com/ros2/rclpy.git
+                cd ..
+                colcon build --symlink-install
+                
+Source workspace and build docs:
+
+                source install/setup.bash
+                cd src/rclpy/rclpy/docs
+                make html
+
+
+### Data content
+
+The recorded file consists of 4 tables:
+
+        
+            "SELECT name FROM sqlite_master WHERE type='table';"
+        
+
+- schema
+    - version of ROS and schema
+- metadata
+    - empty
+- topics
+    - list of all recorded topics, type, serialization format and info
+- messages
+    - contains the serialized data, the topic and the time frame
+
+### Data deserialization
+
+To deserialize the data you need to start rclpy and create a connection to the database.
+
+`Note!` Add 1 to the id of the topics when using SQL. 
