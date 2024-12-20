@@ -23,11 +23,21 @@ All sensors are connected to an **Intel NUC 13 Pro**.
     - [Troubleshooting LiDAR](#troubleshooting)
     - [Documentation](#documentation)
     - [Start LiDAR](#starting-the-lidar)
+    - [Retuned values](#returned-values-by-the-lidar)
   - [IMU](#imu)
+    - [Documentation](#documentation-imu)
+    - [Troubleshooting](#troubleshooting-imu)
+    - [Startingthe IMU](#starting-the-imu)
+    - [Returned Values](#retuned-values-imu)
+  - [Camera](#camera)
+    - [Documentation](#documentation-camera)
+  - [External Monitor (Asus Zenscreen)](#external-monitor)
+- [Quickstart](#quickstart)
+- [Data extraction](#data-extraction)
 
 
 ## Installation
-The setup is required to use `WitMotion HW T9053-485`, `RPLIDAR S2`  and `RealSense D345i` with ROS2 and Python on `Ubuntu 22.04` and `ROS2` [Humble](https://docs.ros.org/en/humble/index.html).
+The setup is required to use `WitMotion HW T9053-485`, `RPLIDAR S2`  and `RealSense D345i` with ROS2 and Python on `Ubuntu 22.04` and [ROS2 Humble](https://docs.ros.org/en/humble/index.html).
 
 
 Note: The workspace is named `ros2_ws`, the LiDAR package `rp_test`, the camera package `my_realsense` and the IMU package `witmotion_imu`.
@@ -79,18 +89,137 @@ ros2 run rp_test talker_single
 ```
 
 
+####  Returned values by the LiDAR:
+* Measured values
+    * quality - Quality of the current measurement sample 
+    * angle_q6 - The measurement heading angle related to RPLIDAR’s heading. In degree unit, (0°-360°) Stored using fix point numb 
+    * distance_q2 - Measured object distance related to RPLIDAR’s rotation center. In millimeter (mm) unit. Represents using fix point. Set to 0 when the measurement is invalid 
+
+
 ### IMU
-test
+
+1. Open the terminal and create a package:
+```bash
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python witmotion_imu
+```
+
+
+2. Update the setup and config files to include the necessary Python libraries:
+  - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/package.xml)
+  - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.py)
+  - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/WitMotion/setup.cfg)
+
+3. Install missing libraries:
+```bash
+pip install pyserial
+```
+
+4. Create a publisher and subscriber in `~/ros2_ws/src/witmotion_imu/witmotion_imu/`
+5. Build the Node `colcon build --packages-select witmotion_imu`
+
+
+#### Troubleshooting IMU
+- device not detected: `sudo apt remove brltty` , then unplug and replug it
+- grant permission: `sudo chmod 777 /dev/ttyUSB*`
+- check the permission: `ls -l /dev/ttyUSB*`
+
+
+#### Documentation IMU
+[Official github repo](https://github.com/WITMOTION/WitHighModbus_HWT9073485)
+
+
+#### Starting the IMU
+First check ports, then run node.
+```
+cd ~/ros2_ws
+source install/setup.bash
+ros2 run witmotion_imu talker
+```
+
+
+#### Retuned Values IMU
+- `Acc`: Acceleration - These values measure the acceleration forces in different directions
+- `As`: Gyroscope - These values measure the rate of rotation around each axis
+- `H`: Magnetometer - These values measure the magnetic field strength in different directions
+- `Ang`: Euler Angles - These values describe the orientation of the sensor in space
+
+
+### Camera
+
+1. Open the terminal and create a package:
+```bash
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python my_realsense
+```
+
+2. Update the setup and config files to include the necessary Python libraries:
+ - [package.xml](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/package.xml)
+  - [setup.cfg](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.cfg)
+  - [setup.py](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/realsense/my_realsense/setup.py)
+
+3. Install missing libraries:
+```bash
+pip install pyrealsense2
+pip install opencv-python
+```
+
+4. Install librealsense2:  https://github.com/IntelRealSense/librealsense/blob/master/doc/installation.md#prerequisites
+
+
+ Clone the librealsense2 repo
+```bash
+git clone https://github.com/IntelRealSense/librealsense.git
+```
+Run Intel Realsense permissions script from librealsense2 root directory:
+
+```bash
+cd librealsense
+./scripts/setup_udev_rules.sh
+```
+
+4. Create a publisher and subscriber in `~/ros2_ws/src/my_realsense/my_realsense`
+5. Build the Node `colcon build --packages-select my_realsense`
+
+
+#### Documentation Camera
+[doc](https://github.com/IntelRealSense/librealsense/blob/master/doc/distribution_linux.md#installing-the-packages)
+
+[Github](https://github.com/IntelRealSense/realsense-ros?tab=readme-ov-file)
 
 
 
+### External Monitor
+Steps to install the Asus Zenscreen:
 
+Disable Secure Boot in the BIOS, then reboot, and run the following:
+```
+# Make this directory if it doesn't exist, and cd into it
+mkdir -p ~/Downloads/Install_Files/DisplayLink
+cd ~/Downloads/Install_Files/DisplayLink
 
+# Download the Ubuntu APT package provided by Synaptics.com, the official 
+# makers of DisplayLink
+wget https://www.synaptics.com/sites/default/files/Ubuntu/pool/stable/main/all/synaptics-repository-keyring.deb
+
+# Install the DisplayLink APT package keyring
+sudo apt install ./synaptics-repository-keyring.deb
+
+# Update your APT package cache
+sudo apt update
+
+# Install the DisplayLink driver provided by Synaptics.com, the official source
+sudo apt install displaylink-driver
+
+# Reboot. 
+# Now it is plug-and-play. Plug in your DisplayLink adapter and it just works.
+# It may take up to 5~10 seconds to recognize a monitor. 
+```
 
 
 ## QuickStart
 
-Connect the LiDAR first and then the IMU!
+Check the ports and the sequence you connect the device to the PC.
 
 - open ports
   - ```sudo chmod 777 /dev/ttyUSB*```
@@ -98,18 +227,20 @@ Connect the LiDAR first and then the IMU!
   - ```cd ~/ros2_ws/```
 - source
   - ``` source install/setup.bash ```
-- launch all sensors
+- use a launch file
   - ``` cd launch/ ```
-  - ``` ros2 launch launch_all.py ```
-- or launching sensors separately
+  - ``` ros2 launch <launch_file.py> ```
+-  launching sensors separately
   - ```cd ~/ros2_ws/```
-  - ```ros2 run rp_test talker```
-  - ```ros2 run my_realsense talker```
+  - ```ros2 run rp_test talker_single```
+  - ```ros2 run my_realsense talker_rgb```
   - ```ros2 run witmotion_imu talker```
 
   
-## Instructions
+Using a launch file will record the data in a bag file.
+
+
+## Data extraction
 
 - All about the recorded [bag file](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/bag%20file%20info.md)
-- [Script](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/launch/launch_all_sensors.py) to launch all sensors at the same time
-- Script to display the [Metadata](https://github.com/FjoGeo/ROS_Tutotrial/blob/master/read%20and%20display%20data/display_metadata.py) 
+
