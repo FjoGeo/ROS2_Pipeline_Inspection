@@ -4,7 +4,7 @@ from rplidar import RPLidar
 import time
 
 def scan():
-    lidar = RPLidar(port="COM3", baudrate=1000000, timeout=5)
+    lidar = RPLidar(port="/dev/ttyUSB0", baudrate=1000000, timeout=5)
 
     try:
         lidar.connect()
