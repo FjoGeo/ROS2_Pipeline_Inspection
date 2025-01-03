@@ -1,7 +1,7 @@
 import rclpy
 from rclpy.node import Node
 from std_msgs.msg import Float32, Int32
-from pyrplidar import PyRPlidar
+from rplidar import RPLidar
 import time
 
 class LidarPublisher(Node):
@@ -16,46 +16,57 @@ class LidarPublisher(Node):
 
         timer_period = 0.1  # seconds
         self.timer = self.create_timer(timer_period, self.publish_scan)
-        self.lidar1 = PyRPlidar()
-        self.lidar1.connect(port="/dev/ttyUSB0", baudrate=1000000, timeout=10)
-        self.lidar1.set_motor_pwm(700)
-        self.lidar2 = PyRPlidar()
-        self.lidar2.connect(port="/dev/ttyUSB1", baudrate=1000000, timeout=10)
-        self.lidar2.set_motor_pwm(700)
+        
+        try:
+            self.lidar1 = RPLidar(port="/dev/ttyUSB0", baudrate=1000000, timeout=10)
+            self.lidar1.connect()
+            self.lidar2 = RPLidar(port="/dev/ttyUSB1", baudrate=1000000, timeout=10)
+            self.lidar2.connect()
+        except:
+            self.lidar1 = RPLidar(port="/dev/ttyUSB1", baudrate=1000000, timeout=10)
+            self.lidar1.connect()
+            self.lidar2 = RPLidar(port="/dev/ttyUSB2", baudrate=1000000, timeout=10)
+            self.lidar2.connect()
+
         time.sleep(2)
-        self.scan_generator1 = self.lidar1.start_scan_express(0)()
-        self.scan_generator2 = self.lidar2.start_scan_express(0)()
+        self.scan_generator1 = self.lidar1.iter_measurments(max_buf_meas=500)
+        self.scan_generator2 = self.lidar2.iter_measurments(max_buf_meas=500)
 
     def publish_scan(self):
         try:
-            scan1 = next(self.scan_generator1)
-            scan2 = next(self.scan_generator2)
-
+            
             msg_quality1 = Int32()
-            msg_quality1.data = scan1.quality
-            self.publisher_quality1.publish(msg_quality1)
             msg_quality2 = Int32()
-            msg_quality2.data = scan2.quality
-            self.publisher_quality2.publish(msg_quality2)
-
             msg_angle1 = Float32()
-            msg_angle1.data = scan1.angle
-            self.publisher_angle1.publish(msg_angle1)
             msg_angle2 = Float32()
-            msg_angle2.data = scan2.angle
-            self.publisher_angle2.publish(msg_angle2)
-
             msg_distance1 = Float32()
-            msg_distance1.data = scan1.distance
-            self.publisher_distance1.publish(msg_distance1)
             msg_distance2 = Float32()
-            msg_distance2.data = scan2.distance
-            self.publisher_distance2.publish(msg_distance2)
 
-            output = f'LiDAR1: quality={msg_quality1.data}, angle={msg_angle1.data}, distance={msg_distance1.data}' \
+
+            for new_scan1, quality1, angle1, distance1, new_scan2, quality2, angle2, distance2 in zip(self.scan_generator1, self.scan_generator2):
+
+                msg_quality1.data = quality1
+                self.publisher_quality1.publish(msg_quality1)
+                
+                msg_quality2.data = quality2
+                self.publisher_quality2.publish(msg_quality2)
+
+                msg_angle1.data = angle1
+                self.publisher_angle1.publish(msg_angle1)
+                
+                msg_angle2.data = angle2
+                self.publisher_angle2.publish(msg_angle2)
+
+                msg_distance1.data = distance1
+                self.publisher_distance1.publish(msg_distance1)
+
+                msg_distance2.data = distance2
+                self.publisher_distance2.publish(msg_distance2)
+
+                output = f'LiDAR1: quality={msg_quality1.data}, angle={msg_angle1.data}, distance={msg_distance1.data}' \
                         f'\nLiDAR2: quality={msg_quality2.data}, angle={msg_angle2.data}, distance={msg_distance2.data}'
             
-            self.get_logger().info(output)
+                self.get_logger().info(output)
         except StopIteration:
             self.get_logger().info('StopIteration: No more scans')
         except Exception as e:

@@ -12,8 +12,14 @@ class LidarPublisher(Node):
         self.publisher_distance = self.create_publisher(Float32, 'lidar_distance', 10)
         timer_period = 0.1
         self.timer = self.create_timer(timer_period, self.publish_scan)
-        self.lidar = RPLidar(port="/dev/ttyUSB0", baudrate=1000000, timeout=10)
-        self.lidar.connect()
+        
+        try:
+            self.lidar = RPLidar(port="/dev/ttyUSB0", baudrate=1000000, timeout=10)
+            self.lidar.connect()
+        except:
+            self.lidar = RPLidar(port="/dev/ttyUSB1", baudrate=1000000, timeout=10)
+            self.lidar.connect()
+
         time.sleep(2)
         self.scan_generator = self.lidar.iter_measurments(max_buf_meas=500)
 
