@@ -12,31 +12,17 @@ def scan():
         time.sleep(2)
 
         print("Starting scan...")
-        scan_generator1 = lidar1.iter_scans()
-        scan_generator2 = lidar2.iter_scans()
+        scan_generator1 = lidar1.iter_measurments(max_buf_meas=500)
+        scan_generator2 = lidar2.iter_measurments(max_buf_meas=500)
 
-        qualities1, angles1, ranges1 = [], [], []
-        qualities2, angles2, ranges2 = [], [], []
 
         while True:
-            scan1 = next(scan_generator1)
-            scan2 = next(scan_generator2)
 
-            for quality, angle, distance in scan:
-                qualities1.append(quality)
-                angles1.append(angle)
-                ranges1.append(distance)
+            for new_scan, quality, angle, distance in scan_generator1:
+                print(f"Quality: {quality}, Angle: {angle}°, Distance: {distance} mm")
 
-                print(f"Qualities: {quality}, Angles: {angle}, Ranges: {distance}")
-
-            for quality, angle, distance in scan:
-                qualities2.append(quality)
-                angles2.append(angle)
-                ranges2.append(distance)
-
-                print(f"Qualities: {quality}, Angles: {angle}, Ranges: {distance}")
-
-
+            for qnew_scan, quality, angle, distance in scan_generator2:
+                print(f"Quality: {quality}, Angle: {angle}°, Distance: {distance} mm")
 
     except KeyboardInterrupt:
         print("Stopping scan...")
