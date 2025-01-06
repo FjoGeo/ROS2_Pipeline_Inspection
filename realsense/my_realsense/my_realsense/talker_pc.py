@@ -20,7 +20,7 @@ class RealSensePointCloudPublisher(Node):
                 ('pc_topic2', 'realsense2/pointcloud'),
                 ('resolution', (640, 480)),
                 ('frame_rate', 30), # 30 standard
-                ('publish_rate', 200.0) # 10
+                ('publish_rate', 30.0) # 10
             ]
         )
 

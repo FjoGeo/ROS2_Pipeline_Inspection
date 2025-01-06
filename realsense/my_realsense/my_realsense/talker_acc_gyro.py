@@ -1,17 +1,12 @@
 #!/usr/bin/env python3
 
-
+# realsense driver with 2 cameras for acceleration and gyroscope at 200 Hz
 
 import rclpy
-
 from rclpy.node import Node
-
 from std_msgs.msg import Float32MultiArray
-
 import pyrealsense2 as rs
-
 import numpy as np
-
 
 
 class RealSenseIMUPublisher(Node):
@@ -25,21 +20,13 @@ class RealSenseIMUPublisher(Node):
         self.declare_parameters(
 
             namespace='',
-
             parameters=[
-
                 ('accel_topic1', 'realsense1/accel'),
-
                 ('gyro_topic1', 'realsense1/gyro'),
-
                 ('accel_topic2', 'realsense2/accel'),
-
                 ('gyro_topic2', 'realsense2/gyro'),
-
                 ('publish_rate', 200.0) # 10
-
             ]
-
         )
 
 

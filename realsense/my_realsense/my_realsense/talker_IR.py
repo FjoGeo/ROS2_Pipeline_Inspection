@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+# realsense driver with 2 cameras for acceleration and gyroscope at 200 Hz
+
 import rclpy
 from rclpy.node import Node
 from sensor_msgs.msg import Image

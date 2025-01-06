@@ -19,7 +19,7 @@ class RealSensePublisher(Node):
                 ('depth_topic2', 'realsense2/depth'),
                 ('resolution', (640, 480)),
                 ('frame_rate', 30),
-                ('publish_rate', 10.0)
+                ('publish_rate', 30.0)
             ]
         )
 
