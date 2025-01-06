@@ -27,7 +27,15 @@ class SerialPublisher(Node):
         self.publisher_AngY = self.create_publisher(Float32, 'serial_data/AngY', 10)
         self.publisher_AngZ = self.create_publisher(Float32, 'serial_data/AngZ', 10)
 
-        self.serial_device = DeviceModel("test equipment", "/dev/ttyUSB2", 9600, 0x50, self.update_data)
+
+        serial_ports = ["/dev/ttyUSB2", "/dev/ttyUSB1", "/dev/ttyUSB0"]
+        for port in serial_ports:
+            try:
+                self.serial_device = DeviceModel("test equipment", port, 9600, 0x50, self.update_data)
+                break  
+            except Exception as e:
+                pass 
+
         self.serial_device.openDevice()
         self.serial_device.startLoopRead()
 
