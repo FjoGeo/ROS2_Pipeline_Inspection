@@ -13,7 +13,7 @@
   <exec_depend>pyserial</exec_depend>
   <exec_depend>time</exec_depend>
   <exec_depend>threading</exec_depend>
-  <exec_depend>pyrplidar</exec_depend>
+  <exec_depend>rplidar</exec_depend>
   
 
   <test_depend>ament_copyright</test_depend>
