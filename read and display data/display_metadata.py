@@ -36,5 +36,5 @@ class DisplayMetaData:
 
 
 if __name__ == "__main__":
-    dbPath = "my_bag_1/my_bag_0.db3"
+    dbPath = "my_bag/bagfile.db3"
     display = DisplayMetaData(dbPath)
