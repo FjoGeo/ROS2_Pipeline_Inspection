@@ -7,6 +7,7 @@ from sensor_msgs.msg import Image, PointCloud2
 import os
 import cv2
 from cv_bridge import CvBridge
+import numpy as np
 
 
 class ExtractAll:
@@ -20,7 +21,7 @@ class ExtractAll:
         self.rclpy = rclpy
         self.rclpy.init()
         self.createFolder()
-        self.getAll(['accel', 'gyro', 'rgb'])
+        self.getAll(['accel', 'gyro', 'rgb', 'pointcloud'])
         self.conn.close()
         self.rclpy.shutdown()
     
@@ -28,8 +29,8 @@ class ExtractAll:
     def createFolder(self):
         try:
             os.mkdir('data_export')
-            os.mkdir('data_export/images1')
-            os.mkdir('data_export/images2')
+            os.mkdir(f'data_export/rgb1')
+            os.mkdir(f'data_export/rgb0')
         except FileExistsError:
             pass
 
@@ -89,15 +90,75 @@ class ExtractAll:
             bridge = CvBridge()
             for i, (image, timestamp) in enumerate(zip(self.images, self.timestamps)):
                 cv_image = bridge.imgmsg_to_cv2(image, desired_encoding="passthrough")
-                cv2.imwrite(f"data_export/images{index+1}/image_{timestamp}.jpg", cv_image)
+                cv2.imwrite(f"data_export/rgb{index}/image_{timestamp}.jpg", cv_image)
             # delete timestamps and images
             self.images = []
             self.timestamps = None
 
 
+    ## Pointcloud
+    def getDataAndTime(self, topic: int):
+        self.cur.execute(f"SELECT timestamp, data FROM messages WHERE topic_id={topic}")
+        rows = self.cur.fetchall()
+        timestamps = [row[0] for row in rows]
+        data = [row[1] for row in rows]
+        return timestamps, data
+
+
+    def deserializeDataIntoPointCloud(self, topic: int):
+        timestamps, data = self.getDataAndTime(topic)
+        pointclouds = [self.deserializePointcloud2(d) for d in data]
+        return pointclouds, timestamps
+    
+
+    def pointcloud2ToDataFrame(self, pointcloud, timestamp):
+        points = []
+        for point in np.ndindex((pointcloud.height, pointcloud.width)):
+            point_start_index = point[0] * pointcloud.row_step + point[1] * pointcloud.point_step
+            point_data = pointcloud.data[point_start_index:point_start_index + 16]
+            x = np.frombuffer(point_data[0:4], dtype=np.float32)[0]
+            y = np.frombuffer(point_data[4:8], dtype=np.float32)[0]
+            z = np.frombuffer(point_data[8:12], dtype=np.float32)[0]
+            r = np.frombuffer(point_data[12:13], dtype=np.uint8)[0]
+            g = np.frombuffer(point_data[13:14], dtype=np.uint8)[0]
+            b = np.frombuffer(point_data[14:15], dtype=np.uint8)[0]
+            points.append((timestamp, x, y, z, r, g, b))
+        df = pd.DataFrame(points, columns=['time', 'x', 'y', 'z', 'r', 'g', 'b'])
+        
+        return df
+
+
+    def storePointcloud(self):
+        for index, topic in enumerate(self.list_of_topics):
+            pointclouds, timestamps = self.deserializeDataIntoPointCloud(topic)
+            dataframes = [self.pointcloud2ToDataFrame(pc, t) for pc, t in zip(pointclouds, timestamps)]
+            df = pd.concat(dataframes)
+            df.to_csv(f"data_export/pointcloud{index}_data.csv", index=False)
+
+
     def getAll(self,sensors: list):
         for sensor in sensors:
-            if sensor != 'rgb':
+            if sensor == 'rgb':
+                try:
+                    self.getTopics(sensor)
+                    self.storeImages()
+                    print(f"Data exported for RealSense {sensor} \n")
+                except Exception as e:
+                    print(f"Error: {e}")
+                    print(f"No data found for RealSense {sensor}")
+                    pass
+
+            if sensor == 'pointcloud':
+                try:
+                    self.getTopics(sensor)
+                    self.storePointcloud()
+                    print(f"Data exported for RealSense {sensor} \n")
+                except Exception as e:
+                    print(f"Error: {e}")
+                    print(f"No data found for RealSense {sensor}")
+                    pass
+
+            if sensor == 'accel' or sensor == 'gyro':
                 try:
                     self.getTopics(sensor)
                     list_of_df = self.getData()
@@ -109,15 +170,7 @@ class ExtractAll:
                     print(f"Error: {e}")
                     print(f"No data found for RealSense {sensor}")
                     pass
-            if sensor == 'rgb':
-                try:
-                    self.getTopics(sensor)
-                    self.storeImages()
-                    print(f"Data exported for RealSense {sensor} \n")
-                except Exception as e:
-                    print(f"Error: {e}")
-                    print(f"No data found for RealSense {sensor}")
-                    pass
+
 
 
     @staticmethod
@@ -125,7 +178,7 @@ class ExtractAll:
         msg = deserialize_message(data, Image)
         return msg
     
-    
+
     @staticmethod
     def deserializePointcloud2(data):
         msg = deserialize_message(data, PointCloud2)
