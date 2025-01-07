@@ -1,13 +1,11 @@
-import sqlite3
-import rclpy
+import sqlite3, rclpy, os, cv2
 import pandas as pd
+import numpy as np
 from rclpy.serialization import deserialize_message
 from std_msgs.msg import Float32MultiArray
 from sensor_msgs.msg import Image, PointCloud2
-import os
-import cv2
 from cv_bridge import CvBridge
-import numpy as np
+
 
 
 class ExtractAll:
@@ -134,6 +132,7 @@ class ExtractAll:
             dataframes = [self.pointcloud2ToDataFrame(pc, t) for pc, t in zip(pointclouds, timestamps)]
             df = pd.concat(dataframes)
             df.to_csv(f"data_export/pointcloud{index}_data.csv", index=False)
+            df, dataframes, pointclouds, timestamps = None, None, None, None
 
 
     def getAll(self,sensors: list):
@@ -170,7 +169,6 @@ class ExtractAll:
                     print(f"Error: {e}")
                     print(f"No data found for RealSense {sensor}")
                     pass
-
 
 
     @staticmethod
