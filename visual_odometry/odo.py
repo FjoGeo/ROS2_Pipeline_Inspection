@@ -4,6 +4,7 @@ import cv2
 from tqdm import tqdm
 import logging
 from lib.visualization import plotting
+from lib.visualization.video import play_trip
 
 class VisualOdometry:
     def __init__(self, data_dir):
@@ -54,6 +55,17 @@ class VisualOdometry:
         if len(good_matches) < 8:
             self.logger.warning(f"Not enough good matches: {len(good_matches)}")
             return None, None
+        
+
+        # draw
+        draw_params = dict(matchColor = -1, # draw matches in green color
+                 singlePointColor = None,
+                 matchesMask = None, # draw only inliers
+                 flags = 2)
+
+        img3 = cv2.drawMatches(self.images[i], kp1, self.images[i-1],kp2, good_matches ,None,**draw_params)
+        cv2.imshow("image", img3)
+        cv2.waitKey(200)
 
         q1 = np.float32([kp1[m.queryIdx].pt for m in good_matches])
         q2 = np.float32([kp2[m.trainIdx].pt for m in good_matches])
@@ -136,10 +148,13 @@ class VisualOdometry:
 def main():
     data_dir = "amb_sequences"
     vo = VisualOdometry(data_dir)
+
+    # play_trip(vo.images)  # Comment out to not play the trip
+
     estimated_path = vo.process_frames()
     
     if estimated_path:
-        # plotting.visualize_paths2(estimated_path, "Visual Odometry Single", file_out=os.path.basename(data_dir) + "single.html")
+        plotting.visualize_paths2(estimated_path, "Visual Odometry Single", file_out=os.path.basename(data_dir) + "single.html")
         np.savetxt('estimated_path_right.csv', estimated_path, delimiter=',')
     else:
         print("No path was estimated.")
