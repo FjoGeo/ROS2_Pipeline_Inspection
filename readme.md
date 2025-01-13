@@ -306,7 +306,6 @@ The recorded file consists of 4 tables:
 
 To deserialize the data you need to start rclpy and create a connection to the database.
 
-`Note!` Add 1 to the id of the topics when using SQL. 
 
 ## Visual Odometry
 To calculate a trajectory based on the recorded RGB images, use the [python script](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/visual_odometry/odo.py). The script will calculate a trajectory based on sequential images from one camera and create a .csv withthe estimated coordinates.
