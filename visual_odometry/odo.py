@@ -149,7 +149,7 @@ def main():
     data_dir = "amb_sequences"
     vo = VisualOdometry(data_dir)
 
-    # play_trip(vo.images)  # Comment out to not play the trip
+    play_trip(vo.images)  # Comment out to not play the trip
 
     estimated_path = vo.process_frames()
     

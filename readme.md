@@ -19,24 +19,28 @@ All sensors are connected to an **Intel NUC 13 Pro**.
 ## Table of contents
 - [Introduction](#introduction)
 - [Installation](#installation)
-  - [LiDAR](#lidar)
+  - [LiDAR (RPLIDAR S2)](#lidar)
     - [Troubleshooting LiDAR](#troubleshooting)
     - [Documentation](#documentation)
     - [Start LiDAR](#starting-the-lidar)
     - [Retuned values](#returned-values-by-the-lidar)
-  - [IMU](#imu)
+  - [IMU (WitMotion HW T9053-485)](#imu)
     - [Documentation](#documentation-imu)
     - [Troubleshooting](#troubleshooting-imu)
     - [Startingthe IMU](#starting-the-imu)
     - [Returned Values](#retuned-values-imu)
-  - [Camera](#camera)
+  - [Camera (RealSense D435i)](#camera)
     - [Documentation](#documentation-camera)
   - [External Monitor (Asus Zenscreen)](#external-monitor)
 - [Quickstart](#quickstart)
+  - [Bash scripts](#bash-scripts)
 - [Data extraction](#data-extraction)
   - [Setup](#setup-data-extraction)
+  - [Python scripts for extraction](#python-script-for-extraction)
   - [Content](#data-content)
   - [Deserialization](#data-deserialization)
+- [Visual Odometry](#visual-odometry)
+- [Next steps](#next-steps)
 
 
 ## Installation
@@ -243,6 +247,10 @@ Check the ports and the sequence you connect the device to the PC.
 Using a launch file will record the data in a bag file.
 
 
+### Bash scripts
+To automate the commands above, it is possible to use one of the scripts in the `Bash` directory. 
+
+
 ## Data extraction
 
 ### Setup data extraction
@@ -272,6 +280,11 @@ Source workspace and build docs:
                 make html
 
 
+### Python script for extraction
+To extract all RGB images, pointclouds and IMU/Gyroscope data from a recorded bag-file, use the `extract_all.py` file.
+Other extraction files are located under the directory `read and display data`.
+
+
 ### Data content
 
 The recorded file consists of 4 tables:
@@ -294,3 +307,12 @@ The recorded file consists of 4 tables:
 To deserialize the data you need to start rclpy and create a connection to the database.
 
 `Note!` Add 1 to the id of the topics when using SQL. 
+
+## Visual Odometry
+To calculate a trajectory based on the recorded RGB images, use the [python script](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/visual_odometry/odo.py). The script will calculate a trajectory based on sequential images from one camera and create a .csv withthe estimated coordinates.
+
+
+## Next steps
+- Next step will be the adition of a LiDAR based odometry.
+- Script for camera calibration
+- ...
