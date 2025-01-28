@@ -7,3 +7,6 @@ my_bag/
 data_export/*
 data_export/
 *.jpg
+.venv/*
+vo_test/data/Pipe2.avi
+vo_test/amb_sequencessingle.html
