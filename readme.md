@@ -315,3 +315,5 @@ To calculate a trajectory based on the recorded RGB images, use the [python scri
 - Next step will be the adition of a LiDAR based odometry.
 - Script for camera calibration
 - ...
+
+🔹🚀 If you want better scale estimation, try optical flow-based scale recovery or deep learning-based VO (e.g., DeepVO, SfMLearner).
