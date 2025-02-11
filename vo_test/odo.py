@@ -1,3 +1,7 @@
+# visual odometry without intrinsic camera parameter
+# parameters are aproximated
+
+
 import os
 import numpy as np
 import cv2

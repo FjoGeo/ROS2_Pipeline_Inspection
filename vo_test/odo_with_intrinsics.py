@@ -1,3 +1,6 @@
+# visual odometry with known camera intrinsic parameters
+
+
 import os
 import numpy as np
 import cv2
