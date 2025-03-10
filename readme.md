@@ -195,7 +195,7 @@ cd librealsense
 [Github](https://github.com/IntelRealSense/realsense-ros?tab=readme-ov-file)
 
 ### scanControl (micro-epsilon)
-asd23
+
 
 
 
