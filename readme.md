@@ -8,7 +8,7 @@ This project integrates and manages various sensors to facilitate efficient insp
 - **WitMotion HW T9053-485**
 - **RPLIDAR S2**
 - **RealSense D345i**
-- **scanControl 30xx**
+- **scanControl 3010-200**
 
 All sensors are connected to an **Intel NUC 13 Pro**.  
 
