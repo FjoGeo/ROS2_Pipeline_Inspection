@@ -31,6 +31,10 @@ All sensors are connected to an **Intel NUC 13 Pro**.
     - [Returned Values](#retuned-values-imu)
   - [Camera (RealSense D435i)](#camera)
     - [Documentation](#documentation-camera)
+  - [Laser Scanner](#scancontrol-micro-epsilon)
+    - [Documentation](#documentation-scanner)
+    - [Starting](#starting-scancontrol)
+    - [Retuned Values](#retuned-values-profiles)
   - [External Monitor (Asus Zenscreen)](#external-monitor)
 - [Quickstart](#quickstart)
   - [Bash scripts](#bash-scripts)
@@ -195,8 +199,107 @@ cd librealsense
 [Github](https://github.com/IntelRealSense/realsense-ros?tab=readme-ov-file)
 
 ### scanControl (micro-epsilon)
+1. Open the terminal and create a package:
+```bash
+cd ~/ros2_ws/src
+ros2 pkg create --build-type ament_python laser_scanner
+```
+2. Update the setup and config files to include the necessary Python libraries:
+  - [package.xml](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/scanner_stuff/ROS/package.xml)
+  - [setup.py](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/scanner_stuff/ROS/setup.py)
+  - [setup.cfg](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/scanner_stuff/ROS/setup.cfg)
+
+3. Build the linllt libraries
+
+For pain-free usage, the libraries can be built with the [Meson](http://mesonbuild.com) build system. Meson checks for the required dependencies, like aravis, and does all necessary steps to prepare compiling and installing the code on the currently used platform. For compiling and installing [Ninja](https://ninja-build.org) is used.
+
+If Meson is not installed on the host PC, it can be retrieved via the distribuitions package manager, e.g.
+
+```bash
+sudo apt install meson
+```
+
+or from [source](https://github.com/mesonbuild/meson/releases). Meson dependencies are [Python](http://python.org) (>=3.4) and [Ninja](https://ninja-build.org) (>=1.5).
+
+Before continuing please have a look at the dependencies to guarantee successful compilation.
+
+For each library in the root folder (libmescan/ & libllt/), the following commands have to be executed to fully compile and install linllt. libmescan has to be compiled and installed first.
+
+```bash
+meson builddir
+cd builddir
+ninja
+sudo ninja install
+```
+
+It might be necessary to call `sudo ldconfig` afterwards, to reload the linker cache.
+
+To use the libraries with Python (>=3.4), the module pylinllt (located in the python_bindings folder) has to be copied to the site-packages of the desired python installation. The module assumes the library in /usr/local/lib.
+
+Aravis has to be compiled from source via the GNU build system:
+
+- [Aravis](https://github.com/AravisProject/aravis/releases) (version 0.8 or newer)
+
+To compile the basic GNU build toolchain and the autotools are necessary. Further aravis dependencies are:
+
+- [libxml2](https://github.com/GNOME/libxml2/releases)
+- [glib2](https://github.com/GNOME/glib/releases)
+
+These and the toolchain packages are usually available via the package manager, e.g.
+
+```bash
+sudo apt install build-essential autotools-dev automake intltool libtool gtk-doc-tools libxml2-dev libglib2.0-dev
+```
+
+Make sure to update and upgrade your repos beforehand. Further information can be found on the [aravis Github page](https://github.com/AravisProject/aravis).
 
 
+4. Copy the libraries into the ROS directory
+- copy the pylinllt librarie to `~/ros2_ws/install/laser_scanner/lib/laser_scanner/`
+
+4. Create a publisher  in `~/ros2_ws/src/laser_scanner/laser_scanner/`
+5. Build the Node `colcon build --packages-select laser_scanner`
+
+
+#### Documentation (scanner)
+Documentation can be found [here](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/tree/master/scanner_stuff/scanCONTROL-Linux-SDK-1-0-1/documentation)
+
+
+#### Starting scanControl
+1.  Set IPv4 address of the device to 192.168.100.2
+2. Netmask to 255.255.255.0
+
+2. 
+```
+	sudo ip addr flush dev enp86s0
+	sudo ip addr add 192.168.100.1/24 dev enp86s0
+```
+3. run setup script 
+```
+    python3 gige_ip_control_mod.py 192.168.100.2 192.168.100.1 -s 255.255.255.0 -g 0.0.0.0 -d enp86s0
+```
+4. Now you can run ROS nodes or just python scripts
+```
+cd ~/ros2_ws
+source install/setup.bash
+ros2 run laser_scanner talker
+```
+
+#### Retuned Values (Profiles)
+- `Distance`: To get the  distance  (i.e. z value) of a measuring point,  the center of gravity of the 
+reflection  detected  by  the  CMOS  sensor  column  is  calculated.  Based  on  a  calibration  table 
+this value is converted to a real distance coordinate in the sensor. The value is transmitted as 
+16 bit unsigned integer field which has to be scaled by the sensor specific scaling factors.  
+ 
+- `Position`:  The  position  (x  value)  corresponds  to  a  pixel  row  of  the  CMOS  sensor.  For  every 
+column  one  position  value  is  detected.  Calibration  to  the  real  position  is  achieved  by  the 
+calibration table saved on the sensor. A 16 bit unsigned integer field is transmitted which has 
+to be scaled, too. 
+ 
+- `Intensity`:  The  transmitted value  is  the  difference  between  the  detected  intensity  maximum 
+and  the  currently  used  threshold.  Intensity  correlates  to  how  much  light  one  pixel  of  the 
+matrix has detected while the shutter was open. Prerequisite for detection of a reflection is 
+that the intensity is above the threshold. A 10 bit unsigned integer field is transmitted.
 
 
 ### External Monitor
