@@ -1,7 +1,6 @@
 __pycache__
 WitMotion/__pycache__/*
 WitMotion/__pycache__
-my_bag/*
 my_bag/
 *.csv
 data_export/*
