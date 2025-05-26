@@ -1,14 +1,13 @@
 
 
 # Introduction
-This repository for the project [**3D-OLE**](https://www.hcu-hamburg.de/en/geomatik/harald-sternberg/3d-ole) contains a set of ROS2 drivers, installation instructions and scripts to collect and extract data.
+This project contains a set of ROS2 drivers, installation instructions and scripts to collect and extract data for [**3D-OLE**](https://www.hcu-hamburg.de/en/geomatik/harald-sternberg/3d-ole).
 
 This project integrates and manages various sensors to facilitate efficient inspection processes. The primary sensors used are:
 
 - **WitMotion HW T9053-485**
 - **RPLIDAR S2**
 - **RealSense D345i**
-- **scanControl 3010-200**
 
 All sensors are connected to an **Intel NUC 13 Pro**.  
 
