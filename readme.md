@@ -23,7 +23,7 @@ All sensors are connected to an **Intel NUC 13 Pro**.
     - [Troubleshooting LiDAR](#troubleshooting)
     - [Documentation](#documentation)
     - [Start LiDAR](#starting-the-lidar)
-    - [Retuned values](#returned-values-by-the-lidar)
+    - [Returned values](#returned-values-by-the-lidar)
   - [IMU (WitMotion HW T9053-485)](#imu)
     - [Documentation](#documentation-imu)
     - [Troubleshooting](#troubleshooting-imu)
@@ -34,7 +34,7 @@ All sensors are connected to an **Intel NUC 13 Pro**.
   - [Laser Scanner](#scancontrol-micro-epsilon)
     - [Documentation](#documentation-scanner)
     - [Starting](#starting-scancontrol)
-    - [Retuned Values](#retuned-values-profiles)
+    - [Returned Values](#retuned-values-profiles)
   - [External Monitor (Asus Zenscreen)](#external-monitor)
 - [Quickstart](#quickstart)
   - [Bash scripts](#bash-scripts)
@@ -43,7 +43,6 @@ All sensors are connected to an **Intel NUC 13 Pro**.
   - [Python scripts for extraction](#python-script-for-extraction)
   - [Content](#data-content)
   - [Deserialization](#data-deserialization)
-- [Visual Odometry](#visual-odometry)
 - [Next steps](#next-steps)
 
 
@@ -413,13 +412,8 @@ The recorded file consists of 4 tables:
 To deserialize the data you need to start rclpy and create a connection to the database.
 
 
-## Visual Odometry
-To calculate a trajectory based on the recorded RGB images, use the [python script](https://github.com/FjoGeo/ROS2_Pipeline_And_Crane_Inspection/blob/master/visual_odometry/odo.py). The script will calculate a trajectory based on sequential images from one camera and create a .csv withthe estimated coordinates.
-
-
 ## Next steps
-- Next step will be the adition of a LiDAR based odometry.
-- Script for camera calibration
-- ...
+- Visual Odometry
+- camera calibration
+- sensor synchronization
 
-🔹🚀 If you want better scale estimation, try optical flow-based scale recovery or deep learning-based VO (e.g., DeepVO, SfMLearner).
