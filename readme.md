@@ -413,6 +413,7 @@ To deserialize the data you need to start rclpy and create a connection to the d
 
 
 ## Next steps
+- Simple installation
 - Visual Odometry
 - camera calibration
 - sensor synchronization
