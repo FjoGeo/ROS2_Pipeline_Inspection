@@ -9,7 +9,7 @@ This project integrates and manages various sensors to facilitate efficient insp
 - **RPLIDAR S2**
 - **RealSense D345i**
 
-All sensors are connected to an **Intel NUC 13 Pro**.  
+All sensors were connected to an **Intel NUC 13 Pro**.  
 
 
 ## Table of contents
