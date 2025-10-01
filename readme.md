@@ -1,7 +1,7 @@
 
 
 # Introduction
-This project contains a set of ROS2 drivers, installation instructions and scripts to collect and extract data for [**3D-OLE**](https://www.hcu-hamburg.de/en/geomatik/harald-sternberg/3d-ole).
+This project contains a set of ROS2 drivers, installation instructions and scripts to collect and extract data.
 
 This project integrates and manages various sensors to facilitate efficient inspection processes. The primary sensors used are:
 
@@ -10,10 +10,6 @@ This project integrates and manages various sensors to facilitate efficient insp
 - **RealSense D345i**
 
 All sensors are connected to an **Intel NUC 13 Pro**.  
-
-<div style="text-align: center;">
-  <img title="5G AKI" src="/images/platform.jpg" width="400" height="300">
-</div>
 
 
 ## Table of contents
