@@ -1,0 +1,11 @@
+__pycache__
+WitMotion/__pycache__/*
+WitMotion/__pycache__
+my_bag/
+*.csv
+data_export/*
+data_export/
+*.jpg
+.venv/*
+vo_test/data/Pipe2.avi
+vo_test/amb_sequencessingle.html
